@@ -186,13 +186,13 @@ void HuffmanTree::getCompression(std::map<std::string, std::string>&t,HuffmanTre
         getCompression(t, x->left, path += "1");
 
         if(!x->left && !x->right){
+            // Perche va in crash ?
             Huffman* x_cast = dynamic_cast<Huffman*>(x->info);
 
             if(!x_cast)
                 throw new BadDynamicCast();
 
             t[x_cast->getData()] = path;
-            delete x_cast;
         }
 
         path.pop_back();

@@ -17,6 +17,7 @@ void BinarySearchTree::insert(Tipo* t){
     if(root){
         if(!(typeid(root->info) == typeid(t)))
             throw new BadTypeValue();
+
         insertNodo(root, t->copia());
     }
     else
@@ -152,8 +153,7 @@ Tipo* BinarySearchTree::min() const{
     return p->info->copia();
 }
 
-// [ToDo]
-// Aggiungere const
+
 BinarySearchTree::nodo* BinarySearchTree::succ(const nodo* x) const{
     if(x->right != nullptr){
         return minNodo(x->right);
@@ -183,9 +183,7 @@ BinarySearchTree::nodo* BinarySearchTree::somma(const nodo* a, const nodo* b, no
 
 BinarySearchTree* BinarySearchTree::operator+(const BinarySearchTree* x) const{
     BinarySearchTree* p = new BinarySearchTree();
-
     p->root = somma(root, x->root, nullptr);
-
     return p;
 }
 

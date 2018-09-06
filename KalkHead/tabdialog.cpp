@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QMessageBox>
 #include <QString>
+#include <QTimeLine>
 
 TabDialog::TabDialog(const QString &fileName, QWidget *parent): QDialog(parent){
     controller = new Controller(this);
@@ -86,7 +87,7 @@ Tab::Tab(QWidget* parent, Controller* control): QWidget(parent), controller(cont
     search = new QPushButton(tr("SEARCH"), this);
     max = new QPushButton(tr("MAX"), this);
     min = new QPushButton(tr("MIN"), this);
-    delTree = new QPushButton(tr("DELETE TREE"), this);
+    delTree = new QPushButton(tr("CLAER"), this);
     showTree = new QPushButton(tr("SHOW TREE"), this);
 
     //tree = new BinaryTree();
@@ -97,6 +98,7 @@ Tab::Tab(QWidget* parent, Controller* control): QWidget(parent), controller(cont
     scene = new QGraphicsScene();
     view->setMinimumHeight(300);
     view->setScene(scene);
+
     boxl->addWidget(view);
     //aggiunta dei widget
     mainLayout->addLayout(boxl, 0, 0, 1, 3);
@@ -109,6 +111,7 @@ Tab::Tab(QWidget* parent, Controller* control): QWidget(parent), controller(cont
     mainLayout->addWidget(showTree, 3, 2, 1, 1);
     mainLayout->addWidget(delTree, 4, 0, 1, 1);
     //connessioni tra widget
+
     //connect(line, SIGNAL(returnPressed()), insert, SIGNAL(clicked()));    //PROBLEMA!!!
     connect(insert, SIGNAL(clicked()), this, SLOT(insertClicked()));
     connect(this, SIGNAL(auxiliaryIns()), controller, SLOT(insertClicked()));
@@ -126,6 +129,36 @@ Tab::Tab(QWidget* parent, Controller* control): QWidget(parent), controller(cont
     connect(this, SIGNAL(auxiliaryShowT()), controller, SLOT(showTreeClicked()));
 
     setLayout(mainLayout);
+}
+
+
+void Tab::wheelEvent(QWheelEvent* event){
+    int numDegrees = event->delta() / 8;
+    int numSteps = numDegrees / 15;
+    _numScheduledScalings += numSteps;
+
+    if(_numScheduledScalings * numSteps < 0)
+        _numScheduledScalings = numSteps;
+
+    QTimeLine *anim = new QTimeLine(350, this);
+    anim->setUpdateInterval(20);
+
+    connect(anim, SIGNAL(valueChanged(qreal)), SLOT(scalingTime(qreal)));
+    connect(anim, SIGNAL(finished()), SLOT(animFinished()));
+    anim->start();
+}
+
+void Tab::scalingTime(qreal x){
+    qreal factor = 1.0 + qreal(_numScheduledScalings)/300.0;
+    view->scale(factor, factor);
+}
+
+void Tab::animFinished(){
+    if(_numScheduledScalings > 0)
+        _numScheduledScalings--;
+    else
+        _numScheduledScalings++;
+    sender()->~QObject();
 }
 
 void Tab::linePressed(){
@@ -177,7 +210,7 @@ BinarySearchTab::BinarySearchTab(QWidget *parent, Controller* control): Tab(pare
     keep = new QPushButton(tr("KEEP"), this);
     getLayout()->addWidget(plus, 4, 1, 1, 1);
     getLayout()->addWidget(minus, 4, 2, 1, 1);
-    getLayout()->addWidget(keep, 5, 0, 1, 1);
+    getLayout()->addWidget(keep, 5, 0, 1, 3);
     tree = new BinarySearchTree;
     tree2 = new BinarySearchTree;
 
@@ -229,7 +262,6 @@ HuffmanTab::HuffmanTab(QWidget *parent, Controller* control): Tab(parent,control
     tree = nullptr;
     tree2 = nullptr;
 
-    //fare connessioni..
     // MANCANO CONNESSIONI ?
     // [TODO]
     connect(line, SIGNAL(returnPressed()), this, SLOT(insertClicked()));
@@ -243,19 +275,17 @@ HuffmanTab::HuffmanTab(QWidget *parent, Controller* control): Tab(parent,control
 
 
 void HuffmanTab::drawTextCompression(std::map<std::string, std::string>& dict){
-    int n_righe = 1;
-    int spaziatura = 100;
-
-    cleanScene();
+    QMessageBox msgBox;
+    QString s;
 
     for(auto it = dict.begin(); it != dict.end(); ++it){
-        QGraphicsTextItem* a = new QGraphicsTextItem();
-        a->setPos(spaziatura, n_righe*20);
-        n_righe++;
-        QString tmp = QString::fromStdString(it->first+" -> "+it->second);
-        a->setPlainText(tmp);
-        scene->addItem(a);
+        s += QString::fromStdString(it->first+" -> "+it->second+"\n");
     }
+
+    msgBox.setText(s);
+    msgBox.setWindowTitle("HuffmanCompression");
+    msgBox.exec();
+
 }
 
 
@@ -272,7 +302,6 @@ void HuffmanTab::compressClicked(){
 }
 
 void HuffmanTab::setTree(HuffmanTree* t){
-    //tree->operator =(*t);
     tree = new HuffmanTree(*t);
 }
 
@@ -365,10 +394,10 @@ void Tab::update_draw(BinaryTree* tree){
             Tipo* auxInt = no->info;
             QString s = QString::fromStdString(auxInt->to_string());
             Node* n = new Node(s);
-            //Node* n = new Node(QString::number(no->info));
+
             n->setPos(10+(25*(n_ultimo/2)) + (30*((n_ultimo/2)-1)) + 15, 10); //posizione primo nodo (centrale)
             scene->addItem(n);  //aggiungo la radice alla scena
-            //qDebug() << tree->print();
+
             int h = 50; //altezza che separa ogni nodo dal livello precedente
 
             addDrawNode(no, n->pos(), h, 1, n_ultimo);
@@ -379,15 +408,6 @@ void Tab::update_draw(BinaryTree* tree){
             BinaryTree::nodo* no = tree->returnRoot();
             QString s = QString::fromStdString(no->info->to_string());
             Node* n = new Node(s);
-            /*
-            Intero* auxInt = dynamic_cast<Intero*>(tree->returnRoot()->info);
-            Node* n;
-            if(auxInt)
-                n = new Node(QString::number(auxInt->getData()));
-            Huffman* auxStr = dynamic_cast<Huffman*>(tree->returnRoot()->info);
-            if(auxStr)
-                n = new Node(QString::fromStdString(auxStr->getData()));
-            */
             scene->addItem(n);
         }
     }

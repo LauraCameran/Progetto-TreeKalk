@@ -52,6 +52,7 @@ public:
     virtual QLineEdit* getLine() const;
     virtual QGridLayout* getLayout() const;
     virtual BinaryTree* getTree() const;
+    virtual void wheelEvent(QWheelEvent* event);
 
 public slots:
     void insertClicked();
@@ -62,6 +63,8 @@ public slots:
     void minClicked();
     void deleteTreeClicked();
     void showTreeClicked();
+    void scalingTime(qreal);
+    void animFinished();
 
 signals:
     void auxiliaryIns();
@@ -74,6 +77,7 @@ signals:
     void auxiliaryShowT();
 
 protected:
+    int _numScheduledScalings = 20;
     Controller* controller;
     QGridLayout* mainLayout;
     QLineEdit* line;
@@ -94,7 +98,7 @@ class BinarySearchTab : public Tab{
     Q_OBJECT
 
 public:
-    BinarySearchTab(QWidget *parent=0, Controller* control=0);
+    BinarySearchTab(QWidget *parent = nullptr, Controller* control = nullptr);
     void setTree(BinarySearchTree*);
     void setSecondTree(BinarySearchTree*);
     BinaryTree* getSecondTree() const;
