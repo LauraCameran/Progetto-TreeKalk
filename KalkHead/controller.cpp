@@ -375,7 +375,7 @@ void Controller::subInvClicked(){
 
 void Controller::compressClicked(){
     HuffmanTab* senderTab = dynamic_cast<HuffmanTab*>(sender());
-    std::map<std::string, std::string> dict;
+    std::map<std::string, std::string> dict = dynamic_cast<HuffmanTree*>(senderTab->getTree())->compression();
 
     senderTab->drawTextCompression(dict);
 

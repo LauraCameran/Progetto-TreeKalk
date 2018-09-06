@@ -7,6 +7,7 @@
 #include <QtMath>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QString>
 
 TabDialog::TabDialog(const QString &fileName, QWidget *parent): QDialog(parent){
     controller = new Controller(this);
@@ -229,6 +230,8 @@ HuffmanTab::HuffmanTab(QWidget *parent, Controller* control): Tab(parent,control
     tree2 = nullptr;
 
     //fare connessioni..
+    // MANCANO CONNESSIONI ?
+    // [TODO]
     connect(line, SIGNAL(returnPressed()), this, SLOT(insertClicked()));
     connect(keep, SIGNAL(clicked()), this, SLOT(keepClicked()));
     connect(this, SIGNAL(auxiliaryKeep()), controller, SLOT(keepClicked()));
@@ -240,22 +243,19 @@ HuffmanTab::HuffmanTab(QWidget *parent, Controller* control): Tab(parent,control
 
 
 void HuffmanTab::drawTextCompression(std::map<std::string, std::string>& dict){
-    int n_righe = 0;
-    int spaziatura = 5;
+    int n_righe = 1;
+    int spaziatura = 100;
 
     cleanScene();
 
-    // x & y
     for(auto it = dict.begin(); it != dict.end(); ++it){
-        QGraphicsTextItem* a = new QGraphicsTextItem;
-        a->setPos(n_righe*spaziatura, 70);
-        a->setPlainText(+ " -> " +);
+        QGraphicsTextItem* a = new QGraphicsTextItem();
+        a->setPos(spaziatura, n_righe*20);
+        n_righe++;
+        QString tmp = QString::fromStdString(it->first+" -> "+it->second);
+        a->setPlainText(tmp);
+        scene->addItem(a);
     }
-
-
-
-    scene->addText("PORCO DIO");
-
 }
 
 
