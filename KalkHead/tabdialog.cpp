@@ -30,7 +30,7 @@ TabDialog::TabDialog(const QString &fileName, QWidget *parent): QDialog(parent){
 
 void TabDialog::helpPressed(){
     QMessageBox msgBox;
-    msgBox.setText("Write in the line and than press the button. \nThe display shows the tree you are creating. \n+, -, x and / are operations between the current tree and the tree you will create afterwards (create the first tree, click the operator, create the second tree, click = to see the result). \nSUBTREE PRE and SUBTREE INV display the balanced sub-trees within your current tree (in pre-order and invert-order respectively). \n3-NODE PRE and 3-NODE INV display the 3-nodes within your current tree (in pre-order and invert-order respectively)");
+    msgBox.setText("Write in the line and than press the button. \nThe display shows the tree you are creating. \n+ and - are operations between the current tree and the tree you will create afterwards (create the first tree, click keep, create the second tree, click the operator to make the operation and see the result). \nSUBTREE PRE and SUBTREE INV display the first balanced sub-trees within your current tree (following the pre-order and invert-order respectively). \n3-NODE PRE and 3-NODE INV display the first 3-nodes within your current tree (following the pre-order and invert-order respectively)");
     msgBox.setWindowTitle("HELP");
     msgBox.exec();
 }
@@ -63,7 +63,19 @@ void TabDialog::errNodeSlot(){
     msg.exec();
 }
 
+void TabDialog::errTreeSlot(){
+    QMessageBox msg;
+    msg.setText("Tree Not Exist");
+    msg.setWindowTitle("TREE ERROR");
+    msg.exec();
+}
 
+void TabDialog::errDelSlot(){
+    QMessageBox msg;
+    msg.setText("Delete Not Allowed");
+    msg.setWindowTitle("DELETE ERROR");
+    msg.exec();
+}
 
 
 Tab::Tab(QWidget* parent, Controller* control): QWidget(parent), controller(control){
@@ -366,18 +378,6 @@ void Tab::addDrawNode(BinaryTree::nodo* no, QPointF point, int h, int n_livelli,
         Tipo* auxInt = no->left->info;
         QString s = QString::fromStdString(auxInt->to_string());
         Node* n = new Node(s);
-        /*
-        Intero* auxInt = dynamic_cast<Intero*>(no->left->info);
-        Node* n;
-        if(auxInt)
-            n = new Node(QString::number(auxInt->getData()));
-        Huffman* auxStr = dynamic_cast<Huffman*>(no->left->info);
-        if(auxStr)
-            n = new Node(QString::fromStdString(auxStr->getData()));
-        */
-        //QString s = QString::number(no->left->info);
-        //Node* t1;
-        //t1 = new Node(s);
         n->setPos(point.rx()-((25*n_ultimo/(qPow(2,n_livelli)) + 30*n_ultimo/(qPow(2,n_livelli)))/2), h);
         scene->addItem(n); //aggiungo il nuovo nodo al disegno
         //coordinate per collegare in modo corretto la linea ai nodi
@@ -394,18 +394,6 @@ void Tab::addDrawNode(BinaryTree::nodo* no, QPointF point, int h, int n_livelli,
         Tipo* auxInt = no->right->info;
         QString s = QString::fromStdString(auxInt->to_string());
         Node* n = new Node(s);
-        /*
-        Intero* auxInt = dynamic_cast<Intero*>(no->right->info);
-        Node* n;
-        if(auxInt)
-            n = new Node(QString::number(auxInt->getData()));
-        Huffman* auxStr = dynamic_cast<Huffman*>(no->right->info);
-        if(auxStr)
-            n = new Node(QString::fromStdString(auxStr->getData()));
-            */
-        //QString s = QString::number(no->right->info);
-        //Node* t1;
-        //t1 = new Node(s);
         n->setPos(point.rx()+((25*n_ultimo/(qPow(2,n_livelli)) + 30*n_ultimo/(qPow(2,n_livelli)))/2), h);
         scene->addItem(n); //aggiungo il nuovo nodo al disegno
         //coordinate per collegare in modo corretto la linea ai nodi
@@ -434,8 +422,6 @@ void Tab::cleanScene(){ //ripulisce la scena e resetta la dimensione
 //TWO THREE TAB
 
 void TwoThreeTab::update_draw(BinaryTree* tree){
-    //std::cout<<"QUI";
-    //qDebug()<<"TWO TAB";
      if(tree->returnRoot() != nullptr){
         cleanScene(); //cancello il disegno prima
         view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);

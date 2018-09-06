@@ -7,6 +7,8 @@ Controller::Controller(TabDialog* w): window(w){
     connect(this, SIGNAL(secondTreeError()), window, SLOT(errSecondTreeSlot()));
     connect(this, SIGNAL(errorNode()), window, SLOT(errNodeSlot()));
     // connect(this, SIGNAL(testingHuffman()), window, SLOT(triggerHuffmanTest()));
+    connect(this, SIGNAL(errorTree()), window, SLOT(errTreeSlot()));
+    connect(this, SIGNAL(errorDel()), window, SLOT(errDelSlot()));
 }
 
 void Controller::setTree(BinaryTree* t){
@@ -30,9 +32,11 @@ void Controller::insertClicked(){
         senderTab->update_draw(senderTab->getTree());
     }
     else{
-        int c = senderTab->getLine()->text().toInt(&ok);    //[TODO] modificare gli int in string
+        int c = senderTab->getLine()->text().toInt(&ok);
         if(ok){
-            senderTab->getTree()->insert(new Intero(c));
+            Intero* tmp = new Intero(c);
+            senderTab->getTree()->insert(tmp);
+            delete tmp;
             senderTab->update_draw(senderTab->getTree());
         }
         else
@@ -71,8 +75,17 @@ void Controller::deleteClicked(){
         //mandare c a model e accertarsi che c ci sia [TODO]
         if(ok){
             Intero* tmp = new Intero(c);
-            senderTab->getTree()->deleteNodo(tmp);
+            try{
+                senderTab->getTree()->deleteNodo(tmp);
+            }
+            catch(DeleteNotAllowed* e){
+                emit errorDel();
+            }
+            catch(NodeNotFound* e){
+                emit errorNode();
+            }
             delete tmp;
+            senderTab->cleanScene();
             senderTab->update_draw(senderTab->getTree());
         }
         else
@@ -89,12 +102,17 @@ void Controller::searchClicked(){
     else{
         bool ok;
         int c = senderTab->getLine()->text().toInt(&ok);
-        //ATT!
-        //mandare c a model e accertarsi che c ci sia [TODO]
         if(ok){
-            Tipo* auxT = senderTab->getTree()->search(new Intero(c));
-            Node* nod = new Node(QString::fromStdString(auxT->to_string()));
-            senderTab->drawOneNode(nod);
+            try{
+                Intero* tmp = new Intero(c);
+                Tipo* auxT = senderTab->getTree()->search(tmp);
+                delete tmp;
+                Node* nod = new Node(QString::fromStdString(auxT->to_string()));
+                senderTab->drawOneNode(nod);
+            }
+            catch(NodeNotFound* e){
+                emit errorNode();
+            }
         }
         else
             emit errorInput();
@@ -102,20 +120,27 @@ void Controller::searchClicked(){
 }
 void Controller::maxClicked(){
     Tab* senderTab = dynamic_cast<Tab*>(sender());
-    //ATT!
-    //accertarsi da model che l'albero esista   [TODO]
-    Tipo* auxT = senderTab->getTree()->max();
-    Node* nod = new Node(QString::fromStdString(auxT->to_string()));
-    senderTab->drawOneNode(nod);
+    BinaryTree* t = senderTab->getTree();
+    if(t->returnRoot()){
+        Tipo* auxT = t->max();
+        Node* nod = new Node(QString::fromStdString(auxT->to_string()));
+        senderTab->drawOneNode(nod);
+    }
+    else{
+        emit errorTree();
+    }
 }
 void Controller::minClicked(){
     Tab* senderTab = dynamic_cast<Tab*>(sender());
-    //ATT!
-    //accertarsi da model che l'albero esista   [TODO]
-    Tipo* auxT = senderTab->getTree()->min();
-    //Node* nod = new Node(QString::number(dynamic_cast<Intero*>(auxT)->getData()));
-    Node* nod = new Node(QString::fromStdString(auxT->to_string()));
-    senderTab->drawOneNode(nod);
+    BinaryTree* t = senderTab->getTree();
+    if(t->returnRoot()){
+        Tipo* auxT = t->min();
+        Node* nod = new Node(QString::fromStdString(auxT->to_string()));
+        senderTab->drawOneNode(nod);
+    }
+    else{
+        emit errorTree();
+    }
 }
 
 void Controller::deleteTreeClicked(){
@@ -216,19 +241,27 @@ void Controller::minusClicked(){
 void Controller::subTPreClicked(){
     AvlTab* senderTab = dynamic_cast<AvlTab*>(sender());
     AVLTree* secT = dynamic_cast<AVLTree*>(senderTab->getTree());
-    AVLTree* auxT = secT->subtree_preorder();
-    if(auxT)
-        senderTab->setSecondTree(auxT);
-    senderTab->update_draw(senderTab->getSecondTree());
+    if(secT->returnRoot()){
+        AVLTree* auxT = secT->subtree_preorder();
+        if(auxT)
+            senderTab->setSecondTree(auxT);
+        senderTab->update_draw(senderTab->getSecondTree());
+    }
+    else
+        emit errorTree();
 }
 
 void Controller::subTInvClicked(){
     AvlTab* senderTab = dynamic_cast<AvlTab*>(sender());
     AVLTree* secT = dynamic_cast<AVLTree*>(senderTab->getTree());
-    AVLTree* auxT = secT->subtree_invertorder();
-    if(auxT)
-        senderTab->setSecondTree(auxT);
-    senderTab->update_draw(senderTab->getSecondTree());
+    if(secT->returnRoot()){
+        AVLTree* auxT = secT->subtree_invertorder();
+        if(auxT)
+            senderTab->setSecondTree(auxT);
+        senderTab->update_draw(senderTab->getSecondTree());
+    }
+    else
+        emit errorTree();
 
 }
 
@@ -237,15 +270,33 @@ void Controller::subTInvClicked(){
 void Controller::subPreClicked(){
     TwoThreeTab* senderTab = dynamic_cast<TwoThreeTab*>(sender());
     TwoThreeTree* secT = dynamic_cast<TwoThreeTree*>(senderTab->getTree());
-    Node* nod = new Node(QString::fromStdString(secT->display_other_preorder()->info->to_string()));
-    senderTab->drawOneNode(nod);
+    try{
+        TwoThreeTree::node* n = secT->display_other_preorder();
+        QString s = QString::fromStdString(n->info->to_string());
+        s.append("&");
+        s.append(QString::fromStdString(n->other->to_string()));
+        Node* nod = new Node(s);
+        senderTab->drawOneNode(nod);
+    }
+    catch(NodeNotFound* e){
+        emit errorNode();
+    }
 }
 
 void Controller::subInvClicked(){
     TwoThreeTab* senderTab = dynamic_cast<TwoThreeTab*>(sender());
     TwoThreeTree* secT = dynamic_cast<TwoThreeTree*>(senderTab->getTree());
-    Node* nod = new Node(QString::fromStdString(secT->display_other_invertorder()->info->to_string()));
-    senderTab->drawOneNode(nod);
+    try{
+        TwoThreeTree::node* n = secT->display_other_invertorder();
+        QString s = QString::fromStdString(n->info->to_string());
+        s.append("&");
+        s.append(QString::fromStdString(n->other->to_string()));
+        Node* nod = new Node(s);
+        senderTab->drawOneNode(nod);
+    }
+    catch(NodeNotFound* e){
+        emit errorNode();
+    }
 
 }
 

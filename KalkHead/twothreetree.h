@@ -75,7 +75,9 @@ private:
     void removeOther(node*);
     bool leaf(node*) const;
 
+    //node 3-node nel sottoalbero dx
     node* invertorder(node*) const;
+    //node 3-node nel sottoalbero sx
     node* preorder(node*) const;
 
 

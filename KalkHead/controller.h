@@ -53,7 +53,8 @@ signals:
     void testingHuffman();
     void deleteException();
     void errorNode();
-
+    void errorTree();
+    void errorDel();
 
 private:
     TabDialog* window;  //view

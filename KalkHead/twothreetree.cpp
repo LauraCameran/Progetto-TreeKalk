@@ -9,17 +9,8 @@ TwoThreeTree::node::node(Tipo* i, nodo* p, nodo* l, nodo* r, Tipo* o, nodo* m):n
 
 
 TwoThreeTree::node::~node(){
-    if(info)
-        delete info;
-    if(num == 2){
+    if(num == 2)
         delete other;
-        if(middle)
-            delete middle;
-    }
-    if(right)
-        delete right;
-    if(left)
-        delete left;
 }
 
 //TwoThreeTree::TwoThreeTree(node* r): root(copia(r)){}
@@ -144,6 +135,8 @@ TwoThreeTree::node* TwoThreeTree::searchNodo(nodo* x, const Tipo* t) const{
 // FATTO
 void TwoThreeTree::deleteNodo(const Tipo* t){
     node* aux = searchNodo(dynamic_cast<node*>(root), t);
+    if(!aux)
+        throw new NodeNotFound();
     if(aux->num == 2){  //tolgo il campo info o other in base a quale dei due è t
         if(aux->info == t){ //il campo da rimuovere è il primo (info)
               //tengo solo il secondo campo, other (che ora diventa info)
@@ -164,11 +157,7 @@ void TwoThreeTree::deleteNodo(const Tipo* t){
         }
     }
     else    //il nodo non viene eliminato perchè ha un solo campo info
-        std::cout<<"Eliminazione non consentita"<<std::endl;
-    //        // Throw exception ?
-    //        return;
-    //    dynamic_cast<node*>(aux->parent)->middle = nullptr;
-    //    delete aux;
+        throw new DeleteNotAllowed();
 
 }
 
@@ -234,22 +223,30 @@ void TwoThreeTree::insert(Tipo* t){
 Tipo* TwoThreeTree::search(const Tipo* t) const{
     node* p = searchNodo(dynamic_cast<node*>(root), t);
     if(!p)
-        return nullptr;
+        throw new NodeNotFound();
     return p->info->copia();
 }
 
 Tipo* TwoThreeTree::max() const{
-    node* p = maxNodo(dynamic_cast<node*>(root));
-    if(!p)
-        return nullptr;
+    node* p;
+    if(root){
+        p = maxNodo(dynamic_cast<node*>(root));
+    }
+    else{
+        throw new TreeInexistent();
+    }
     return p->info->copia();
 }
 
 
 Tipo* TwoThreeTree::min() const{
-    node* p = minNodo(dynamic_cast<node*>(root));
-    if(!p)
-        return nullptr;
+    node* p;
+    if(root){
+        p = minNodo(dynamic_cast<node*>(root));
+    }
+    else{
+        throw new TreeInexistent();
+    }
     return p->info->copia();
 }
 
@@ -404,17 +401,21 @@ TwoThreeTree::node* TwoThreeTree::preorder(node* n) const{
     if(n->num == 2){
         return n;
     }
-    if(n->right)
-        return invertorder(dynamic_cast<node*>(n->right));
     if(n->left)
         return invertorder(dynamic_cast<node*>(n->left));
+    if(n->right)
+        return invertorder(dynamic_cast<node*>(n->right));
 
     return nullptr;
 }
 
 
 TwoThreeTree::node* TwoThreeTree::display_other_preorder() const{
-    return preorder(dynamic_cast<node*>(root));
+    node* auxNode = preorder(dynamic_cast<node*>(root));
+    if(!auxNode){
+        throw new NodeNotFound();
+    }
+    return auxNode;
 }
 
 TwoThreeTree::node* TwoThreeTree::invertorder(node* n) const{
@@ -431,7 +432,11 @@ TwoThreeTree::node* TwoThreeTree::invertorder(node* n) const{
 
 // A COSA CAZZO GLI SERVE ?
 TwoThreeTree::node* TwoThreeTree::display_other_invertorder() const{
-    return invertorder(dynamic_cast<node*>(root));
+    node* auxNode = invertorder(dynamic_cast<node*>(root));
+    if(!auxNode){
+        throw new NodeNotFound();
+    }
+    return auxNode;
 }
 
 
