@@ -28,7 +28,16 @@ BinaryTree::nodo::~nodo(){
         delete info;
 }
 
+bool BinaryTree::empty() const{
 
+    if(root == nullptr){
+        std::cout << "INSIDE EMPTY" << std::endl;
+        return true;
+    }
+    else{
+        return false;
+    }
+}
 //PER GUI
 
 int BinaryTree::max_depth() const{

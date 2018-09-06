@@ -24,7 +24,7 @@ class Controller: public QObject{
     Q_OBJECT
 
 public:
-    Controller(TabDialog* =0);
+    Controller(TabDialog* = nullptr);
     void setTree(BinaryTree*);
 
 public slots:
@@ -53,6 +53,7 @@ signals:
     void testingHuffman();
     void deleteException();
     void errorNode();
+    void errOrder();
 
 
 private:

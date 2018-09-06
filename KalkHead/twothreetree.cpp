@@ -404,10 +404,12 @@ TwoThreeTree::node* TwoThreeTree::preorder(node* n) const{
     if(n->num == 2){
         return n;
     }
-    if(n->right)
-        return invertorder(dynamic_cast<node*>(n->right));
+
     if(n->left)
         return invertorder(dynamic_cast<node*>(n->left));
+    if(n->right)
+        return invertorder(dynamic_cast<node*>(n->right));
+
 
     return nullptr;
 }
