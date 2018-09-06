@@ -1,0 +1,85 @@
+#ifndef TWOTHREETREE_H
+#define TWOTHREETREE_H
+#include "binarytree.h"
+#include "exception.h"
+
+class TwoThreeTree: public BinaryTree{
+
+
+public:
+
+    class node: public BinaryTree::nodo{
+
+    public:
+        Tipo* other;    // Secondo campo info
+        int num;        // Tiene conto di quanti campi info
+        nodo* middle;
+        node(Tipo* i = nullptr, nodo* p = nullptr, nodo* l = nullptr, nodo* r = nullptr, Tipo* o = nullptr, nodo* m = nullptr);
+        ~node();
+        // node& operator=(const node&);
+        // a cosa gli serve ? perché lo usa ?
+        // node(const node&);
+    };
+
+
+    void deleteNodo(const Tipo*);
+
+    TwoThreeTree(){}
+    TwoThreeTree(const TwoThreeTree&);
+    ~TwoThreeTree();
+
+    void insert(Tipo*);
+    Tipo* search(const Tipo*) const;
+    Tipo* max() const;
+    Tipo* min() const;
+
+    node* display_other_invertorder() const;
+    node* display_other_preorder() const;
+
+
+    friend std::ostream& operator<<(std::ostream&, const TwoThreeTree*);
+
+private:
+
+        // Tolto proprio
+    // node* radix;
+
+    // Distruttore profondo
+    static void distruggi(nodo*);
+    // Contatore dei nodi
+    static int conta(nodo*);
+
+    node* copia( nodo*, nodo* = nullptr);
+    void insertNodo(nodo*, Tipo*);
+    node* searchNodo(nodo*, const Tipo*) const;
+
+    node* maxNodo(nodo*) const;
+    node* minNodo(nodo*) const;
+
+    void print(std::ostream&, nodo*) const;
+
+    // Divide i due campi di un nodo, fixando di conseguenza
+    // la struttura dell'albero
+    void split(node*, Tipo*);
+
+    // Ricerca il campo centrale tra 3(info, other e uno in input) ???
+    Tipo* searchMiddle(node*, Tipo*);
+
+    // return 1 se esiste figlio sx
+    // return 2 se figlio centrale
+    // return 3 se figlio dx
+    int child(node*) const;
+    void addInfo(node*, Tipo*); //aggiunge il secondo campo info
+
+    // Toglie il secondo campo info
+    void removeOther(node*);
+    bool leaf(node*) const;
+
+    node* invertorder(node*) const;
+    node* preorder(node*) const;
+
+
+
+};
+
+#endif // TWOTHREETREE_H
