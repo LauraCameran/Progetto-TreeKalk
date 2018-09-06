@@ -28,6 +28,7 @@ public slots:
     void errInputSlot();
     void errSecondTreeSlot();
     void triggerHuffmanTest();
+    void errNodeSlot();
 
 private:
     QTabWidget *tabWidget;

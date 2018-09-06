@@ -52,6 +52,8 @@ signals:
     void secondTreeError();
     void testingHuffman();
     void deleteException();
+    void errorNode();
+
 
 private:
     TabDialog* window;  //view

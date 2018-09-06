@@ -56,6 +56,14 @@ void TabDialog::triggerHuffmanTest(){
     msg.exec();
 }
 
+void TabDialog::errNodeSlot(){
+    QMessageBox msg;
+    msg.setText("Node Not Found");
+    msg.setWindowTitle("NODE ERROR");
+    msg.exec();
+}
+
+
 
 
 Tab::Tab(QWidget* parent, Controller* control): QWidget(parent), controller(control){
@@ -184,6 +192,8 @@ void BinarySearchTab::minusClicked(){
 
 void BinarySearchTab::setTree(BinarySearchTree* t){
     tree->operator =(*t);
+    t->elimTree();
+    // Testing
 }
 
 BinaryTree* BinarySearchTab::getSecondTree() const{

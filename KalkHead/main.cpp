@@ -1,9 +1,12 @@
 #include "tabdialog.h"
-
+#include <iostream>
 #include <QApplication>
+using namespace std;
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
+
+
+
     QApplication app(argc, argv);
     QString fileName;
 
@@ -16,6 +19,7 @@ int main(int argc, char *argv[])
     tabdialog.show();
 
     return app.exec();
+
 }
 
 

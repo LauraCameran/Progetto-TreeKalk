@@ -5,6 +5,7 @@
 Controller::Controller(TabDialog* w): window(w){
     connect(this, SIGNAL(errorInput()), window, SLOT(errInputSlot()));
     connect(this, SIGNAL(secondTreeError()), window, SLOT(errSecondTreeSlot()));
+    connect(this, SIGNAL(errorNode()), window, SLOT(errNodeSlot()));
     // connect(this, SIGNAL(testingHuffman()), window, SLOT(triggerHuffmanTest()));
 }
 
@@ -17,16 +18,14 @@ void Controller::insertClicked(){
     bool ok;
 
     if(dynamic_cast<HuffmanTab*>(senderTab)){
-        string s = senderTab->getLine()->text().toStdString();
-        if(s.length() == 0){
+        std::string s = senderTab->getLine()->text().toStdString();
+
+        if(s.length() == 0)
             emit errorInput();
-            return;
-        }
+
 
         // emit(testingHuffman());
         HuffmanTree* p = new HuffmanTree(s);
-        //std::cout << p << std::endl;
-
         dynamic_cast<HuffmanTab*>(senderTab)->setTree(p);
         senderTab->update_draw(senderTab->getTree());
     }
@@ -43,13 +42,24 @@ void Controller::insertClicked(){
 
 void Controller::deleteClicked(){
     Tab* senderTab = dynamic_cast<Tab*>(sender());
+
     if(dynamic_cast<HuffmanTab*>(senderTab)){
-        string s = senderTab->getLine()->text().toStdString();
+        std::string s = senderTab->getLine()->text().toStdString();
         if(s.length() != 0){
             Huffman* tmp = new Huffman(0, s);
-            senderTab->getTree()->deleteNodo(tmp);   //???
+
+            std::cout << tmp << std::endl;
+
+//            try {
+//                senderTab->getTree()->deleteNodo(tmp);
+//            } catch (NodeNotFound* e) {
+//                std::cout << e->getMessage() << std::endl;
+//                emit errorNode();
+//            }
+
             delete tmp;
             senderTab->update_draw(senderTab->getTree());
+
         }
         else
             emit errorInput();
@@ -163,6 +173,7 @@ void Controller::plusClicked(){
     else{
         HuffmanTab* senderTab = dynamic_cast<HuffmanTab*>(sender());
         HuffmanTree* auxT = dynamic_cast<HuffmanTree*>(senderTab->getTree());
+
         if(!senderTab->getSecondTree()){
             emit secondTreeError();
         }
@@ -171,13 +182,6 @@ void Controller::plusClicked(){
             if(auxT){
 
                 BinaryTree* a = senderTab->getSecondTree();
-                std::cout << a << std::endl;
-/*
-                BinaryTree* tmp = dynamic_cast<HuffmanTree*>(a)->operator +(auxT);
-                result->operator =(*tmp);
-                std::cout << tmp << std::endl;
-                delete tmp;
-                */
 
                 try{
                     result = (dynamic_cast<HuffmanTree*>(a))->operator +(auxT);

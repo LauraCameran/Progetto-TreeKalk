@@ -219,9 +219,9 @@ HuffmanTree::nodo* HuffmanTree::searchNodo(nodo* x, const Tipo* t) const{
 Tipo* HuffmanTree::search(const Tipo* x) const{
     // Verifico se un certo nodo Huffman e presente nell'albero
     HuffmanTree::nodo* s = searchNodo(root, x);
-
     if(!s)
         return nullptr;
+//        throw new NodeNotFound("Huffman::search", "Node ");
 
     return s->info->copia();
 }
