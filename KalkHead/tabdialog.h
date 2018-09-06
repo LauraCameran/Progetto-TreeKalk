@@ -29,6 +29,7 @@ public slots:
     void errSecondTreeSlot();
     void triggerHuffmanTest();
     void errNodeSlot();
+    void errTreeSlot();
 
 private:
     QTabWidget *tabWidget;
@@ -145,6 +146,7 @@ public:
     void setTree(HuffmanTree*);
     void setSecondTree(HuffmanTree*);
     BinaryTree* getSecondTree() const;
+    void drawTextCompression(std::map<std::string, std::string>&);
 
 public slots:
     void keepClicked();

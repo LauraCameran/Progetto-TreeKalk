@@ -63,6 +63,12 @@ void TabDialog::errNodeSlot(){
     msg.exec();
 }
 
+void TabDialog::errTreeSlot(){
+    QMessageBox msg;
+    msg.setText("No Tree Insert");
+    msg.setWindowTitle("TREE NOT FOUND");
+    msg.exec();
+}
 
 
 
@@ -226,6 +232,29 @@ HuffmanTab::HuffmanTab(QWidget *parent, Controller* control): Tab(parent,control
     connect(this, SIGNAL(auxiliaryCompress()), controller, SLOT(compressClicked()));
 }
 
+
+void HuffmanTab::drawTextCompression(std::map<std::string, std::string>& dict){
+    int n_righe = 0;
+    int spaziatura = 5;
+
+    cleanScene();
+
+    // x & y
+    for(auto it = dict.begin(); it != dict.end(); ++it){
+        QGraphicsTextItem* a = new QGraphicsTextItem;
+        a->setPos(n_righe*spaziatura, 70);
+        a->setPlainText(+ " -> " +);
+    }
+
+
+
+
+
+    scene->addText("PORCO DIO");
+
+}
+
+
 void HuffmanTab::keepClicked(){
     emit auxiliaryKeep();
 }
@@ -367,18 +396,7 @@ void Tab::addDrawNode(BinaryTree::nodo* no, QPointF point, int h, int n_livelli,
         Tipo* auxInt = no->left->info;
         QString s = QString::fromStdString(auxInt->to_string());
         Node* n = new Node(s);
-        /*
-        Intero* auxInt = dynamic_cast<Intero*>(no->left->info);
-        Node* n;
-        if(auxInt)
-            n = new Node(QString::number(auxInt->getData()));
-        Huffman* auxStr = dynamic_cast<Huffman*>(no->left->info);
-        if(auxStr)
-            n = new Node(QString::fromStdString(auxStr->getData()));
-        */
-        //QString s = QString::number(no->left->info);
-        //Node* t1;
-        //t1 = new Node(s);
+
         n->setPos(point.rx()-((25*n_ultimo/(qPow(2,n_livelli)) + 30*n_ultimo/(qPow(2,n_livelli)))/2), h);
         scene->addItem(n); //aggiungo il nuovo nodo al disegno
         //coordinate per collegare in modo corretto la linea ai nodi
@@ -395,18 +413,7 @@ void Tab::addDrawNode(BinaryTree::nodo* no, QPointF point, int h, int n_livelli,
         Tipo* auxInt = no->right->info;
         QString s = QString::fromStdString(auxInt->to_string());
         Node* n = new Node(s);
-        /*
-        Intero* auxInt = dynamic_cast<Intero*>(no->right->info);
-        Node* n;
-        if(auxInt)
-            n = new Node(QString::number(auxInt->getData()));
-        Huffman* auxStr = dynamic_cast<Huffman*>(no->right->info);
-        if(auxStr)
-            n = new Node(QString::fromStdString(auxStr->getData()));
-            */
-        //QString s = QString::number(no->right->info);
-        //Node* t1;
-        //t1 = new Node(s);
+
         n->setPos(point.rx()+((25*n_ultimo/(qPow(2,n_livelli)) + 30*n_ultimo/(qPow(2,n_livelli)))/2), h);
         scene->addItem(n); //aggiungo il nuovo nodo al disegno
         //coordinate per collegare in modo corretto la linea ai nodi
@@ -421,10 +428,12 @@ void Tab::addDrawNode(BinaryTree::nodo* no, QPointF point, int h, int n_livelli,
 }
 
 void Tab::drawOneNode(Node* n){
-    //scene->clear();
     cleanScene();
     scene->addItem(n);
 }
+
+
+
 
 void Tab::cleanScene(){ //ripulisce la scena e resetta la dimensione
     scene->clear();

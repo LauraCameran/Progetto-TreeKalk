@@ -212,7 +212,6 @@ HuffmanTree::nodo* HuffmanTree::searchNodo(nodo* x, const Tipo* t) const{
     if(!x)
         return nullptr;
 
-
     if(p->checkKey(x->info))
         return x;
     else{
@@ -229,7 +228,6 @@ Tipo* HuffmanTree::search(const Tipo* x) const{
     HuffmanTree::nodo* s = searchNodo(root, x);
     if(!s)
         return nullptr;
-
 
     return s->info->copia();
 }

@@ -6,7 +6,7 @@ Controller::Controller(TabDialog* w): window(w){
     connect(this, SIGNAL(errorInput()), window, SLOT(errInputSlot()));
     connect(this, SIGNAL(secondTreeError()), window, SLOT(errSecondTreeSlot()));
     connect(this, SIGNAL(errorNode()), window, SLOT(errNodeSlot()));
-
+    connect(this, SIGNAL(errTree()), window, SLOT(errTreeSlot()));
     // connect(this, SIGNAL(testingHuffman()), window, SLOT(triggerHuffmanTest()));
 }
 
@@ -24,9 +24,12 @@ void Controller::insertClicked(){
         if(s.length() == 0)
             emit errorInput();
 
-
         // emit(testingHuffman());
         HuffmanTree* p = new HuffmanTree(s);
+
+        if(senderTab->getTree())
+            senderTab->getTree()->elimTree();
+
         dynamic_cast<HuffmanTab*>(senderTab)->setTree(p);
         senderTab->update_draw(senderTab->getTree());
     }
@@ -92,16 +95,37 @@ void Controller::deleteClicked(){
 
 }
 
+
+
 void Controller::searchClicked(){
     Tab* senderTab = dynamic_cast<Tab*>(sender());
-    if(dynamic_cast<HuffmanTab*>(senderTab)){
 
+
+    if(dynamic_cast<HuffmanTab*>(senderTab)){
+        bool ok;
+        std::string str_search = senderTab->getLine()->text().toStdString();
+
+        if(str_search.length() == 0)
+            emit errorInput();
+
+        Tipo* h_search = new Huffman(0, str_search);
+        Tipo* auxT = senderTab->getTree()->search(h_search);
+        delete h_search;
+
+        if(!auxT){
+            emit errorNode();
+            return;
+        }
+
+        Node* nod = new Node(QString::fromStdString(auxT->to_string()));
+        senderTab->drawOneNode(nod);
     }
     else{
         bool ok;
         int c = senderTab->getLine()->text().toInt(&ok);
         //ATT!
         //mandare c a model e accertarsi che c ci sia [TODO]
+        // [TODO] - Staccare "new Intero(c)" e fare la delete dopo
         if(ok){
             Tipo* auxT = senderTab->getTree()->search(new Intero(c));
             Node* nod = new Node(QString::fromStdString(auxT->to_string()));
@@ -111,18 +135,25 @@ void Controller::searchClicked(){
             emit errorInput();
     }
 }
+
+
 void Controller::maxClicked(){
     Tab* senderTab = dynamic_cast<Tab*>(sender());
-    //ATT!
-    //accertarsi da model che l'albero esista   [TODO]
+    if(!senderTab->getTree()){
+        emit errTree();
+        return;
+    }
+
     Tipo* auxT = senderTab->getTree()->max();
     Node* nod = new Node(QString::fromStdString(auxT->to_string()));
     senderTab->drawOneNode(nod);
 }
 void Controller::minClicked(){
     Tab* senderTab = dynamic_cast<Tab*>(sender());
-    //ATT!
-    //accertarsi da model che l'albero esista   [TODO]
+    if(!senderTab->getTree()){
+        emit errTree();
+        return;
+    }
     Tipo* auxT = senderTab->getTree()->min();
     //Node* nod = new Node(QString::number(dynamic_cast<Intero*>(auxT)->getData()));
     Node* nod = new Node(QString::fromStdString(auxT->to_string()));
@@ -133,14 +164,21 @@ void Controller::deleteTreeClicked(){
     Tab* senderTab = dynamic_cast<Tab*>(sender());
 
     //accertarsi da model che l'albero esista prima di eliminarlo
+    if(!senderTab->getTree()){
+        senderTab->cleanScene();
+        return;
+    }
 
     senderTab->getTree()->elimTree();
     senderTab->cleanScene();
 }
 void Controller::showTreeClicked(){
     Tab* senderTab = dynamic_cast<Tab*>(sender());
-    //ATT!
-    //accertarsi da model che l'albero esista
+    if(!senderTab->getTree()){
+        emit errTree();
+        return;
+    }
+
     senderTab->update_draw(senderTab->getTree());
 }
 
@@ -269,6 +307,12 @@ void Controller::subInvClicked(){
 }
 
 void Controller::compressClicked(){
+    HuffmanTab* senderTab = dynamic_cast<HuffmanTab*>(sender());
+    std::map<std::string, std::string> dict;
+
+    senderTab->drawTextCompression(dict);
+
+//    drawTextCompression
 /*
     HuffmanTab* senderTab = dynamic_cast<HuffmanTab*>(sender());
     HuffmanTree* auxT = dynamic_cast<HuffmanTree*>(senderTab->getTree());

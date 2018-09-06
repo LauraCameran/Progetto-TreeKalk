@@ -62,6 +62,8 @@ void BinarySearchTree::deleteNodo(const Tipo* t){
     BinarySearchTree::nodo* x = nullptr;
     BinarySearchTree::nodo* y = nullptr;
     BinarySearchTree::nodo* z = searchNodo(root, t);
+    if(!z)
+        throw new NodeNotFound();
 
     if(z->left == nullptr || z->right == nullptr)
         y = z;

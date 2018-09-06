@@ -54,6 +54,7 @@ signals:
     void deleteException();
     void errorNode();
     void errOrder();
+    void errTree();
 
 
 private:
