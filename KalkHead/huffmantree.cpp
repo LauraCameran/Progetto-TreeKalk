@@ -46,6 +46,14 @@ HuffmanTree::HuffmanTree(const std::string& s){
 
 // Metodo di supporto al costruttore per costruire l'albero e nel caso di ricostruzione di esso
 void HuffmanTree::buildTree(std::map<std::string, int>& d){
+
+    if(dict.empty()){
+        if(root != nullptr)
+            distruggi(root);
+        root = nullptr;
+        return;
+    }
+
     if(root != nullptr)
         distruggi(root);
 
@@ -221,7 +229,7 @@ Tipo* HuffmanTree::search(const Tipo* x) const{
     HuffmanTree::nodo* s = searchNodo(root, x);
     if(!s)
         return nullptr;
-//        throw new NodeNotFound("Huffman::search", "Node ");
+
 
     return s->info->copia();
 }
@@ -240,23 +248,26 @@ void HuffmanTree::deleteNodo(const Tipo *x){
     if(!x_cast)
         throw new BadDynamicCast();
 
-    bool check = true;
+    bool check = false;
     auto it = dict.begin();
 
 
-    while(check && it != dict.end()){
-        if(it->first == x_cast->getData() && it->second == x_cast->getFrequency())
-            check = false;
+    while(!check && it != dict.end()){
+        if(it->first == x_cast->getData())
+            check = true;
         ++it;
     }
 
 
+
     // Ricostruisci albero dal dict
-    if(!check){
+
+    if(check){
         it--;
         dict.erase(it);
         buildTree(dict);
     }
-    // Throw Exception ? node not found ?
+    else
+        throw new NodeNotFound("Huffman::search", "Node Not Found");
 
 }

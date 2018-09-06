@@ -225,8 +225,8 @@ HuffmanTab::HuffmanTab(QWidget *parent, Controller* control): Tab(parent,control
     getLayout()->addWidget(plus, 4, 1, 1, 1);
     getLayout()->addWidget(keep, 4, 2, 1, 1);
     getLayout()->addWidget(compress, 5, 0, 2, 3);
-    tree = new HuffmanTree;
-    tree2 = new HuffmanTree;
+    tree = nullptr;
+    tree2 = nullptr;
 
     //fare connessioni..
     connect(line, SIGNAL(returnPressed()), this, SLOT(insertClicked()));
@@ -326,7 +326,8 @@ void TwoThreeTab::subInvClicked(){
 
 //rifacciamo il disegno da zero
 void Tab::update_draw(BinaryTree* tree){
-    //std::cout<<"QUI";
+
+
      if(tree->returnRoot() != nullptr){
         cleanScene(); //cancello il disegno prima
         view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);

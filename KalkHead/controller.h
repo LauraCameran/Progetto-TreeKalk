@@ -24,7 +24,7 @@ class Controller: public QObject{
     Q_OBJECT
 
 public:
-    Controller(TabDialog* =0);
+    Controller(TabDialog* = nullptr);
     void setTree(BinaryTree*);
 
 public slots:
@@ -55,6 +55,9 @@ signals:
     void errorNode();
     void errorTree();
     void errorDel();
+    void errOrder();
+
+
 
 private:
     TabDialog* window;  //view

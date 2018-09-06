@@ -46,7 +46,7 @@ public:
     // Delete un singolo nodo virtuale poiche le operazioni di delete possono
     // cambiare a seconda della struttura dell'albero. Es Alberi Rossi/Neri
     virtual void deleteNodo(const Tipo*) =0;
-
+    virtual bool empty() const;
     friend std::ostream& operator <<(std::ostream& os, const BinaryTree* t){
         t->print(os, t->root);
         return os;
