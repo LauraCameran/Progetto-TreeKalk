@@ -53,8 +53,11 @@ signals:
     void testingHuffman();
     void deleteException();
     void errorNode();
+    void errorTree();
+    void errorDel();
     void errOrder();
     void errTree();
+
 
 
 private:

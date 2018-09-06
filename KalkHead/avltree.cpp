@@ -87,6 +87,8 @@ void AVLTree::deleteNodo(const Tipo* t){
     node* x = nullptr;
     node* y = nullptr;
     node* z = searchNodo(dynamic_cast<node*>(root), t);
+    if(!z)
+        throw new NodeNotFound();
 
     if(z->left == nullptr || z->right == nullptr)
         y = z;
@@ -117,16 +119,14 @@ void AVLTree::deleteNodo(const Tipo* t){
     if(x)
         rebalance(x);
 
-    //TENTATIVO DI MODIFICA PER RIBILANCIARE TUTTO BENE
-
-    //[TODO]
-    //FUNZIONA (:
-    node* auxNMin = minNodo(root);
-    if(x!=auxNMin)
-        rebalance(auxNMin);
-    node* auxNMax = maxNodo(root);
-    if(x!=auxNMax)
-        rebalance(auxNMax);
+    if(root){
+        node* auxNMin = minNodo(root);
+        if(x!=auxNMin)
+            rebalance(auxNMin);
+        node* auxNMax = maxNodo(root);
+        if(x!=auxNMax)
+            rebalance(auxNMax);
+    }
 
 }
 
@@ -157,23 +157,19 @@ void AVLTree::insert(Tipo* t){
 Tipo* AVLTree::search(const Tipo* t) const{
     node* p = searchNodo(dynamic_cast<node*>(root), t);
     if(!p)
-        return nullptr;
+        throw new NodeNotFound();
     return p->info->copia();
 }
 
 Tipo* AVLTree::max() const{
     if(root)
         return maxNodo(dynamic_cast<node*>(root))->info->copia();
-    // L:ALTRIMENTI SOLLEVARE ECCEZIONE
-    // perchè se non esiste neanche una radice vuol dire che l'albero è vuoto
     return nullptr;
 }
 
 Tipo* AVLTree::min() const{
     if(root)
         return minNodo(dynamic_cast<node*>(root))->info->copia();
-    // L:ALTRIMENTI SOLLEVARE ECCEZIONE
-    // perchè se non esiste neanche una radice vuol dire che l'albero è vuoto
     return nullptr;
 }
 
@@ -191,9 +187,6 @@ void AVLTree::setBalance(node* n){
     n->balance = height(dynamic_cast<node*>(n->right)) - height(dynamic_cast<node*>(n->left));
 }
 
-// e neccessario cambiare left, right in node*
-// [TODO]
-// L: CAGATE
 AVLTree::node* AVLTree::rotateLeft(node* a){
     node* b = dynamic_cast<node*>(a->right);
     b->parent = a->parent;
@@ -306,9 +299,10 @@ AVLTree::node* AVLTree::preorder(node* n) const{
 
 AVLTree* AVLTree::subtree_preorder() {
     node* radix = preorder(dynamic_cast<node*>(root));
+    if(!radix){
+        throw new NodeNotFound();
+    }
     AVLTree* subTree = new AVLTree();
-
-
     subTree->root = copia(radix);
     return subTree;
 }
@@ -316,11 +310,11 @@ AVLTree* AVLTree::subtree_preorder() {
 
 AVLTree* AVLTree::subtree_invertorder() {
     nodo* radix = invertorder(dynamic_cast<node*>(root));
-
+    if(!radix){
+        throw new NodeNotFound();
+    }
     AVLTree* subTree = new AVLTree();
-
     subTree->root = copia(radix);
-
     return subTree;
 }
 

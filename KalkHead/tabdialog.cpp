@@ -30,7 +30,7 @@ TabDialog::TabDialog(const QString &fileName, QWidget *parent): QDialog(parent){
 
 void TabDialog::helpPressed(){
     QMessageBox msgBox;
-    msgBox.setText("Write in the line and than press the button. \nThe display shows the tree you are creating. \n+, -, x and / are operations between the current tree and the tree you will create afterwards (create the first tree, click the operator, create the second tree, click = to see the result). \nSUBTREE PRE and SUBTREE INV display the balanced sub-trees within your current tree (in pre-order and invert-order respectively). \n3-NODE PRE and 3-NODE INV display the 3-nodes within your current tree (in pre-order and invert-order respectively)");
+    msgBox.setText("Write in the line and than press the button. \nThe display shows the tree you are creating. \n+ and - are operations between the current tree and the tree you will create afterwards (create the first tree, click keep, create the second tree, click the operator to make the operation and see the result). \nSUBTREE PRE and SUBTREE INV display the first balanced sub-trees within your current tree (following the pre-order and invert-order respectively). \n3-NODE PRE and 3-NODE INV display the first 3-nodes within your current tree (following the pre-order and invert-order respectively)");
     msgBox.setWindowTitle("HELP");
     msgBox.exec();
 }
@@ -65,11 +65,17 @@ void TabDialog::errNodeSlot(){
 
 void TabDialog::errTreeSlot(){
     QMessageBox msg;
-    msg.setText("No Tree Insert");
-    msg.setWindowTitle("TREE NOT FOUND");
+    msg.setText("Tree Not Exist");
+    msg.setWindowTitle("TREE ERROR");
     msg.exec();
 }
 
+void TabDialog::errDelSlot(){
+    QMessageBox msg;
+    msg.setText("Delete Not Allowed");
+    msg.setWindowTitle("DELETE ERROR");
+    msg.exec();
+}
 
 
 Tab::Tab(QWidget* parent, Controller* control): QWidget(parent), controller(control){
@@ -245,8 +251,6 @@ void HuffmanTab::drawTextCompression(std::map<std::string, std::string>& dict){
         a->setPos(n_righe*spaziatura, 70);
         a->setPlainText(+ " -> " +);
     }
-
-
 
 
 
@@ -444,8 +448,6 @@ void Tab::cleanScene(){ //ripulisce la scena e resetta la dimensione
 //TWO THREE TAB
 
 void TwoThreeTab::update_draw(BinaryTree* tree){
-    //std::cout<<"QUI";
-    //qDebug()<<"TWO TAB";
      if(tree->returnRoot() != nullptr){
         cleanScene(); //cancello il disegno prima
         view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);

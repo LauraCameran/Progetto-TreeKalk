@@ -55,4 +55,14 @@ public:
     BadTypeValue(std::string c = "BadTypeValue", std::string m = "Bad type of value"):Exception(c, m){}
 };
 
+class DeleteNotAllowed: public Exception{
+public:
+    DeleteNotAllowed(std::string c = "DeleteNotAllowed", std::string m = "Delete not allowed"):Exception(c, m){}
+};
+
+class TreeInexistent: public Exception{
+public:
+    TreeInexistent(std::string c = "TreeInexistent", std::string m = "Tree not exist"):Exception(c, m){}
+};
+
 #endif // EXCEPTION_H
