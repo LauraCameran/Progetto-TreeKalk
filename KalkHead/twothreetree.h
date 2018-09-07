@@ -41,9 +41,6 @@ public:
 
 private:
 
-        // Tolto proprio
-    // node* radix;
-
     // Distruttore profondo
     static void distruggi(nodo*);
     // Contatore dei nodi
