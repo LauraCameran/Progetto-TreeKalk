@@ -45,6 +45,7 @@ class Tab : public QWidget{
     Q_OBJECT
 public:
     Tab(QWidget* parent = nullptr, Controller* c = nullptr);
+    virtual ~Tab();
     virtual void update_draw(BinaryTree*);
     virtual void addDrawNode(BinaryTree::nodo*, QPointF, int, int, int);
     virtual void drawOneNode(Node*);
@@ -52,7 +53,7 @@ public:
     virtual QLineEdit* getLine() const;
     virtual QGridLayout* getLayout() const;
     virtual BinaryTree* getTree() const;
-    virtual void wheelEvent(QWheelEvent* event);
+   // virtual void wheelEvent(QWheelEvent* event);
 
 public slots:
     void insertClicked();
@@ -63,8 +64,8 @@ public slots:
     void minClicked();
     void deleteTreeClicked();
     void showTreeClicked();
-    void scalingTime(qreal);
-    void animFinished();
+   // void scalingTime(qreal);
+   // void animFinished();
 
 signals:
     void auxiliaryIns();
@@ -77,7 +78,7 @@ signals:
     void auxiliaryShowT();
 
 protected:
-    int _numScheduledScalings = 20;
+    //int _numScheduledScalings = 20;
     Controller* controller;
     QGridLayout* mainLayout;
     QLineEdit* line;

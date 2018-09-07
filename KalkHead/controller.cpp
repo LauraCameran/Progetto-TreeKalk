@@ -62,8 +62,8 @@ void Controller::insertClicked(){
 void Controller::deleteClicked(){
     Tab* senderTab = dynamic_cast<Tab*>(sender());
 
-    if(!senderTab->getTree())
-        return;
+   // if(!senderTab->getTree())
+   //     return;
 
     if(dynamic_cast<HuffmanTab*>(senderTab)){
         std::string s = senderTab->getLine()->text().toStdString();
@@ -121,9 +121,7 @@ void Controller::deleteClicked(){
 void Controller::searchClicked(){
     Tab* senderTab = dynamic_cast<Tab*>(sender());
 
-
     if(dynamic_cast<HuffmanTab*>(senderTab)){
-        bool ok;
         std::string str_search = senderTab->getLine()->text().toStdString();
 
         if(str_search.length() == 0){
@@ -194,19 +192,18 @@ void Controller::minClicked(){
 void Controller::deleteTreeClicked(){
     Tab* senderTab = dynamic_cast<Tab*>(sender());
 
-    //accertarsi da model che l'albero esista prima di eliminarlo
     if(!senderTab->getTree()){
         senderTab->cleanScene();
         return;
     }
-
     senderTab->getTree()->elimTree();
     senderTab->cleanScene();
 }
+
 void Controller::showTreeClicked(){
     Tab* senderTab = dynamic_cast<Tab*>(sender());
 
-    if(!senderTab->getTree()){
+    if(!senderTab->getTree() || !senderTab->getTree()->returnRoot()){
         emit errTree();
         return;
     }
@@ -219,29 +216,35 @@ void Controller::keepClicked(){
 
     BinarySearchTab* senderTab = dynamic_cast<BinarySearchTab*>(sender());
     if(senderTab){  //il segnale deriva da BinarySearch
-
         BinarySearchTree* auxT = dynamic_cast<BinarySearchTree*>(senderTab->getTree());
-        if(auxT->empty()){
+        if(!senderTab->getTree()->returnRoot()){
             emit errTree();
             return;
         }
-
-        if(auxT)
+        if(auxT){
             senderTab->setSecondTree(auxT);
-
-
+        }
+        else{
+            emit errTree();
+            return;
+        }
         senderTab->cleanScene();
     }
     else{   //il segnale deriva da Huffman
         HuffmanTab* senderTab = dynamic_cast<HuffmanTab*>(sender());
         HuffmanTree* auxT = dynamic_cast<HuffmanTree*>(senderTab->getTree());
-        if(auxT)
+        if(!senderTab->getTree() || !senderTab->getTree()->returnRoot()){
+            emit errTree();
+            return;
+        }
+        if(auxT){
             senderTab->setSecondTree(auxT);
+            //senderTab->getSecondTree()->elimTree();
+        }
         else{
             emit errTree();
             return;
         }
-
         senderTab->cleanScene();
     }
 
@@ -252,11 +255,10 @@ void Controller::keepClicked(){
 void Controller::plusClicked(){
     BinarySearchTab* senderTab = dynamic_cast<BinarySearchTab*>(sender());
 
-
-
     if(senderTab){
         BinarySearchTree* auxT = dynamic_cast<BinarySearchTree*>(senderTab->getTree());
-        if(!auxT){
+
+        if(!senderTab->getTree()->returnRoot()){
             emit errTree();
             return;
         }
@@ -277,20 +279,26 @@ void Controller::plusClicked(){
     else{
         HuffmanTab* senderTab = dynamic_cast<HuffmanTab*>(sender());
         HuffmanTree* auxT = dynamic_cast<HuffmanTree*>(senderTab->getTree());
-        if(!auxT){
+
+        if(!senderTab->getTree()){
             emit errTree();
             return;
         }
 
-        if(!senderTab->getSecondTree())
+        if(!senderTab->getTree()->returnRoot()){
             emit secondTreeError();
-
+            return;
+        }
+/*
+        if(!senderTab->getSecondTree()){
+            emit errTree();
+            return;
+        }
+*/
         else{
             HuffmanTree* result = new HuffmanTree();
             if(auxT){
 
-                // Se il second tree non e impostato
-                // mandare un messaggio di errore
                 BinaryTree* a;
                 if(!senderTab->getSecondTree()){
                     emit errOrder();
@@ -309,8 +317,12 @@ void Controller::plusClicked(){
 
 void Controller::minusClicked(){
     BinarySearchTab* senderTab = dynamic_cast<BinarySearchTab*>(sender());
-    BinarySearchTree* auxT = dynamic_cast<BinarySearchTree*>(senderTab->getTree());
+    if(!senderTab->getTree()->returnRoot()){
+        emit errTree();
+        return;
+    }
     BinarySearchTree* result;
+    BinarySearchTree* auxT = dynamic_cast<BinarySearchTree*>(senderTab->getTree());
     if(auxT){
         BinaryTree* a = senderTab->getSecondTree();
         result = (dynamic_cast<BinarySearchTree*>(a))->operator -(auxT);
@@ -387,7 +399,7 @@ void Controller::subInvClicked(){
 void Controller::compressClicked(){
 
     HuffmanTab* senderTab = dynamic_cast<HuffmanTab*>(sender());
-    if(senderTab->getTree() == nullptr){
+    if(!senderTab->getTree() || !senderTab->getTree()->returnRoot()){
         emit errorTree();
         return;
     }
