@@ -13,7 +13,7 @@
 TabDialog::TabDialog(/*const QString &fileName, */QWidget *parent): QDialog(parent){
     controller = new Controller(this);
 
-    tabWidget = new QTabWidget;
+    tabWidget = new QTabWidget(this);
     tabWidget->insertTab(1, new AvlTab(this, controller), tr("AVL"));
     tabWidget->insertTab(2, new TwoThreeTab(this, controller), tr("TWO-THREE"));
     tabWidget->insertTab(3, new HuffmanTab(this, controller), tr("HUFFMAN"));
@@ -22,7 +22,7 @@ TabDialog::TabDialog(/*const QString &fileName, */QWidget *parent): QDialog(pare
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Help, this);
     connect(buttonBox, SIGNAL(helpRequested()), this, SLOT(helpPressed()));
 
-    QVBoxLayout *mainLayout = new QVBoxLayout;
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(tabWidget);
     mainLayout->addWidget(buttonBox);
     setLayout(mainLayout);
@@ -31,8 +31,6 @@ TabDialog::TabDialog(/*const QString &fileName, */QWidget *parent): QDialog(pare
 }
 
 TabDialog::~TabDialog(){
-    delete tabWidget;
-    delete buttonBox;
     delete controller;
 }
 
@@ -96,20 +94,16 @@ Tab::Tab(QWidget* parent, Controller* control): QWidget(parent), controller(cont
     min = new QPushButton(tr("MIN"), this);
     delTree = new QPushButton(tr("CLEAR"), this);
     showTree = new QPushButton(tr("SHOW TREE"), this);
+    tree = nullptr;
+    line = new QLineEdit(this);
 
-
-    line = new QLineEdit();
-
-    QVBoxLayout* boxl = new QVBoxLayout();
+    QVBoxLayout* boxl = new QVBoxLayout(this);
 
     view = new QGraphicsView(this);
     scene = new QGraphicsScene(this);
 
     view->setMinimumHeight(300);
     view->setScene(scene);
-
-//    view->verticalScrollBar()->setSliderPosition(0);
-//    view->horizontalScrollBar()->setSliderPosition(0);
 
     boxl->addWidget(view);
     //aggiunta dei widget
@@ -262,7 +256,6 @@ void BinarySearchTab::minusClicked(){
 void BinarySearchTab::setTree(BinarySearchTree* t){
     tree->operator =(*t);
     t->elimTree();
-    // Testing
 }
 
 BinaryTree* BinarySearchTab::getSecondTree() const{
@@ -387,6 +380,8 @@ TwoThreeTab::TwoThreeTab(QWidget *parent, Controller* control): Tab(parent,contr
     connect(threeNodeInv, SIGNAL(clicked()), this, SLOT(subInvClicked()));
     connect(this, SIGNAL(auxiliarySubInv()), controller, SLOT(subInvClicked()));
 }
+
+TwoThreeTab::~TwoThreeTab(){}
 
 void TwoThreeTab::subPreClicked(){
     emit auxiliarySubPre();

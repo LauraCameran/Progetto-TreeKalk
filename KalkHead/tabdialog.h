@@ -47,6 +47,7 @@ class Tab : public QWidget{
 public:
     Tab(QWidget* parent = nullptr, Controller* c = nullptr);
     virtual ~Tab();
+
     virtual void update_draw(BinaryTree*);
     virtual void addDrawNode(BinaryTree::nodo*, QPointF, int, int, int);
     virtual void drawOneNode(Node*);
@@ -65,8 +66,7 @@ public slots:
     void minClicked();
     void deleteTreeClicked();
     void showTreeClicked();
-   // void scalingTime(qreal);
-   // void animFinished();
+
 
 signals:
     void auxiliaryIns();
@@ -79,11 +79,13 @@ signals:
     void auxiliaryShowT();
 
 protected:
-    //int _numScheduledScalings = 20;
+
     Controller* controller;
     QGridLayout* mainLayout;
     QLineEdit* line;
+
     BinaryTree* tree;
+
     QGraphicsView* view;
     QGraphicsScene* scene;
     QPushButton* insert;
@@ -182,6 +184,7 @@ class TwoThreeTab : public Tab{
 
 public:
     explicit TwoThreeTab(QWidget *parent = 0, Controller* control=0);
+    ~TwoThreeTab();
     void update_draw(BinaryTree*);
     void addDrawNode(BinaryTree::nodo*, QPointF, int, int, int);
 
