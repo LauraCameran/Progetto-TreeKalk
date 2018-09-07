@@ -112,6 +112,8 @@ BinarySearchTree::nodo* BinarySearchTree::searchNodo(nodo* x, const Tipo* t) con
 
 Tipo* BinarySearchTree::search(const Tipo* t) const{
     BinarySearchTree::nodo* p = searchNodo(root, t);
+    if(!p)
+        throw new NodeNotFound();
     Tipo* ret = p->info->copia();
     return ret;
 }
@@ -193,12 +195,12 @@ BinarySearchTree* BinarySearchTree::operator+(const BinarySearchTree* x) const{
 
 BinarySearchTree::nodo* BinarySearchTree::sottrazione(const nodo* a, const nodo* b) const{
     // Se non esiste a provo con b
-    if(!a && b)
-        // IF nodo a don't exist, just -b
-        return new nodo(b->info, nullptr, sottrazione(nullptr, b->left), sottrazione(nullptr, b->right));
+//    if(!a && b)
+//        // IF nodo a don't exist, just -b
+//        return new nodo(b->info, nullptr, sottrazione(nullptr, b->left), sottrazione(nullptr, b->right));
 
-    if(!b && a)
-        return new nodo(a->info, nullptr, sottrazione(a->left, nullptr), sottrazione(a->right, nullptr));
+//    if(!b && a)
+//        return new nodo(a->info, nullptr, sottrazione(a->left, nullptr), sottrazione(a->right, nullptr));
 
     if(a && b)
         return new nodo((a->info->operator-(b->info)), nullptr, sottrazione(a->left, b->left), sottrazione(a->right, b->right));

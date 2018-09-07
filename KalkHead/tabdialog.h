@@ -54,7 +54,7 @@ public:
     virtual QLineEdit* getLine() const;
     virtual QGridLayout* getLayout() const;
     virtual BinaryTree* getTree() const;
-    virtual void wheelEvent(QWheelEvent* event);
+   // virtual void wheelEvent(QWheelEvent* event);
 
 public slots:
     void insertClicked();
@@ -65,8 +65,8 @@ public slots:
     void minClicked();
     void deleteTreeClicked();
     void showTreeClicked();
-    void scalingTime(qreal);
-    void animFinished();
+   // void scalingTime(qreal);
+   // void animFinished();
 
 signals:
     void auxiliaryIns();
@@ -79,7 +79,7 @@ signals:
     void auxiliaryShowT();
 
 protected:
-    int _numScheduledScalings = 20;
+    //int _numScheduledScalings = 20;
     Controller* controller;
     QGridLayout* mainLayout;
     QLineEdit* line;

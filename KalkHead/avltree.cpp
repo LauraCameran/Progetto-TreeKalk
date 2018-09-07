@@ -164,18 +164,18 @@ Tipo* AVLTree::search(const Tipo* t) const{
 Tipo* AVLTree::max() const{
     if(root)
         return maxNodo(dynamic_cast<node*>(root))->info->copia();
-    return nullptr;
+
+    throw new TreeInexistent();
 }
 
 Tipo* AVLTree::min() const{
     if(root)
         return minNodo(dynamic_cast<node*>(root))->info->copia();
-    return nullptr;
+
+    throw new TreeInexistent();
 }
 
-// E SE INVECE DI FARE TUTTI STI CAZZO DI CAST
-// Modifico la classe node e metto left, right e parten a node* ?!!?
-// L: NO! left right e parent vengono ereditati da nodo
+
 int AVLTree::height(node* n){
     if(!n)
         return -1;
