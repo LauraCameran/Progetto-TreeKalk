@@ -87,17 +87,22 @@ Tab::Tab(QWidget* parent, Controller* control): QWidget(parent), controller(cont
     search = new QPushButton(tr("SEARCH"), this);
     max = new QPushButton(tr("MAX"), this);
     min = new QPushButton(tr("MIN"), this);
-    delTree = new QPushButton(tr("CLAER"), this);
+    delTree = new QPushButton(tr("CLEAR"), this);
     showTree = new QPushButton(tr("SHOW TREE"), this);
 
     //tree = new BinaryTree();
     line = new QLineEdit();
     controller->setTree(tree);
     QVBoxLayout* boxl = new QVBoxLayout();
+
     view = new QGraphicsView();
     scene = new QGraphicsScene();
+
     view->setMinimumHeight(300);
     view->setScene(scene);
+
+//    view->verticalScrollBar()->setSliderPosition(0);
+//    view->horizontalScrollBar()->setSliderPosition(0);
 
     boxl->addWidget(view);
     //aggiunta dei widget

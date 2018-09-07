@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QPaintEvent>
 
+
 class Node : public QGraphicsEllipseItem{
 protected:
     const unsigned int dimension = 25;

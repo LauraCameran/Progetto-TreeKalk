@@ -216,11 +216,20 @@ void Controller::showTreeClicked(){
 
 //BINARY SEARCH
 void Controller::keepClicked(){
+
     BinarySearchTab* senderTab = dynamic_cast<BinarySearchTab*>(sender());
     if(senderTab){  //il segnale deriva da BinarySearch
+
         BinarySearchTree* auxT = dynamic_cast<BinarySearchTree*>(senderTab->getTree());
+        if(auxT->empty()){
+            emit errTree();
+            return;
+        }
+
         if(auxT)
             senderTab->setSecondTree(auxT);
+
+
         senderTab->cleanScene();
     }
     else{   //il segnale deriva da Huffman
@@ -228,7 +237,10 @@ void Controller::keepClicked(){
         HuffmanTree* auxT = dynamic_cast<HuffmanTree*>(senderTab->getTree());
         if(auxT)
             senderTab->setSecondTree(auxT);
-
+        else{
+            emit errTree();
+            return;
+        }
 
         senderTab->cleanScene();
     }
