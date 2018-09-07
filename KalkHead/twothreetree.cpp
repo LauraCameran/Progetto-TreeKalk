@@ -13,7 +13,6 @@ TwoThreeTree::node::~node(){
         delete other;
 }
 
-//TwoThreeTree::TwoThreeTree(node* r): root(copia(r)){}
 
 TwoThreeTree::~TwoThreeTree(){
     delete dynamic_cast<node*>(root);

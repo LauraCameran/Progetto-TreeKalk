@@ -1,4 +1,4 @@
-#ifndef TABDIALOG_H
+﻿#ifndef TABDIALOG_H
 #define TABDIALOG_H
 
 #include "controller.h"
@@ -21,7 +21,8 @@ class TabDialog : public QDialog{
     Q_OBJECT
 
 public:
-    explicit TabDialog(const QString& fileName, QWidget *parent = nullptr);
+    explicit TabDialog(/*const QString& fileName,*/ QWidget *parent = nullptr);
+    virtual ~TabDialog();
 
 public slots:
     void helpPressed();
@@ -103,6 +104,7 @@ public:
     void setTree(BinarySearchTree*);
     void setSecondTree(BinarySearchTree*);
     BinaryTree* getSecondTree() const;
+    virtual ~BinarySearchTab();
 
 public slots:
     void keepClicked();
@@ -129,6 +131,7 @@ public:
     AvlTab(QWidget *parent = 0, Controller* control=0);
     void setSecondTree(AVLTree*);
     BinaryTree* getSecondTree() const;
+    virtual ~AvlTab();
 
 public slots:
     void subTPreClicked();

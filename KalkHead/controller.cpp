@@ -4,6 +4,10 @@
 #include <QString>
 #include <QMessageBox>
 
+
+using std::cout;
+using std::endl;
+
 Controller::Controller(TabDialog* w): window(w){
     connect(this, SIGNAL(errorInput()), window, SLOT(errInputSlot()));
     connect(this, SIGNAL(secondTreeError()), window, SLOT(errSecondTreeSlot()));
@@ -14,9 +18,9 @@ Controller::Controller(TabDialog* w): window(w){
     connect(this, SIGNAL(errorDel()), window, SLOT(errDelSlot()));
 }
 
-void Controller::setTree(BinaryTree* t){
-    tree = t;
-}
+
+Controller::~Controller(){}
+
 
 void Controller::insertClicked(){
     Tab* senderTab = dynamic_cast<Tab*>(sender());  //vede chi ha mandato il segnale
@@ -93,8 +97,8 @@ void Controller::deleteClicked(){
     else{
         bool ok;
         int c = senderTab->getLine()->text().toInt(&ok);
-        //ATT!
-        //mandare c a model e accertarsi che c ci sia [TODO]
+
+
         if(ok){
             Intero* tmp = new Intero(c);
             try{
@@ -102,6 +106,7 @@ void Controller::deleteClicked(){
             }
             catch(DeleteNotAllowed* e){
                 emit errorDel();
+                return;
             }
             catch(NodeNotFound* e){
                 emit errorNode();

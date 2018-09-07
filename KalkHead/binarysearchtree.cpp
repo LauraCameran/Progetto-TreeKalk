@@ -32,7 +32,9 @@ void BinarySearchTree::insertNodo(nodo* x, Tipo* t){
                 insertNodo(x->left, t);
             }
             else{
+
                 x->left = new BinarySearchTree::nodo(t, x);
+
             }
         }
         else{
@@ -63,6 +65,7 @@ void BinarySearchTree::deleteNodo(const Tipo* t){
     BinarySearchTree::nodo* x = nullptr;
     BinarySearchTree::nodo* y = nullptr;
     BinarySearchTree::nodo* z = searchNodo(root, t);
+
     if(!z)
         throw new NodeNotFound();
 

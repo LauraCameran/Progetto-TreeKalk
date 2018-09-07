@@ -1,21 +1,21 @@
 #include "tabdialog.h"
 #include <iostream>
 #include <QApplication>
+#include <binarysearchtree.h>
+
 using namespace std;
 
 int main(int argc, char *argv[]){
 
 
-
     QApplication app(argc, argv);
-    QString fileName;
 
-    if (argc >= 2)
-        fileName = argv[1];
-    else
-        fileName = ".";
+//    if (argc >= 2)
+//        fileName = argv[1];
+//    else
+//        fileName = ".";
 
-    TabDialog tabdialog(fileName);
+    TabDialog tabdialog(nullptr);
     tabdialog.show();
 
     return app.exec();

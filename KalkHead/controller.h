@@ -25,7 +25,7 @@ class Controller: public QObject{
 
 public:
     Controller(TabDialog* = nullptr);
-    void setTree(BinaryTree*);
+    virtual ~Controller();
 
 public slots:
     //generics
@@ -62,7 +62,7 @@ signals:
 
 private:
     TabDialog* window;  //view
-    BinaryTree* tree; //model
+
 };
 
 #endif // CONTROLLER_H
