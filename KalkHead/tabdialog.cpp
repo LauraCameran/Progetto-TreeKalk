@@ -10,16 +10,16 @@
 #include <QString>
 #include <QTimeLine>
 
-TabDialog::TabDialog(const QString &fileName, QWidget *parent): QDialog(parent){
+TabDialog::TabDialog(/*const QString &fileName, */QWidget *parent): QDialog(parent){
     controller = new Controller(this);
-    QFileInfo fileInfo(fileName);
+
     tabWidget = new QTabWidget;
     tabWidget->insertTab(1, new AvlTab(this, controller), tr("AVL"));
     tabWidget->insertTab(2, new TwoThreeTab(this, controller), tr("TWO-THREE"));
     tabWidget->insertTab(3, new HuffmanTab(this, controller), tr("HUFFMAN"));
     tabWidget->insertTab(4, new BinarySearchTab(this, controller), tr("BINARY-SEARCH"));
 
-    buttonBox = new QDialogButtonBox(QDialogButtonBox::Help);
+    buttonBox = new QDialogButtonBox(QDialogButtonBox::Help, this);
     connect(buttonBox, SIGNAL(helpRequested()), this, SLOT(helpPressed()));
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -29,6 +29,13 @@ TabDialog::TabDialog(const QString &fileName, QWidget *parent): QDialog(parent){
 
     setWindowTitle(tr("Tab Tree"));
 }
+
+TabDialog::~TabDialog(){
+    delete tabWidget;
+    delete buttonBox;
+    delete controller;
+}
+
 
 void TabDialog::helpPressed(){
     QMessageBox msgBox;
@@ -81,7 +88,7 @@ void TabDialog::errDelSlot(){
 
 
 Tab::Tab(QWidget* parent, Controller* control): QWidget(parent), controller(control){
-    mainLayout = new QGridLayout;  //layout
+    mainLayout = new QGridLayout(this);
     insert = new QPushButton(tr("INSERT"), this);
     del = new QPushButton(tr("DELETE"), this);
     search = new QPushButton(tr("SEARCH"), this);
@@ -90,13 +97,13 @@ Tab::Tab(QWidget* parent, Controller* control): QWidget(parent), controller(cont
     delTree = new QPushButton(tr("CLEAR"), this);
     showTree = new QPushButton(tr("SHOW TREE"), this);
 
-    //tree = new BinaryTree();
+
     line = new QLineEdit();
-    controller->setTree(tree);
+
     QVBoxLayout* boxl = new QVBoxLayout();
 
-    view = new QGraphicsView();
-    scene = new QGraphicsScene();
+    view = new QGraphicsView(this);
+    scene = new QGraphicsScene(this);
 
     view->setMinimumHeight(300);
     view->setScene(scene);
@@ -118,6 +125,7 @@ Tab::Tab(QWidget* parent, Controller* control): QWidget(parent), controller(cont
     //connessioni tra widget
 
     //connect(line, SIGNAL(returnPressed()), insert, SIGNAL(clicked()));    //PROBLEMA!!!
+
     connect(insert, SIGNAL(clicked()), this, SLOT(insertClicked()));
     connect(this, SIGNAL(auxiliaryIns()), controller, SLOT(insertClicked()));
     connect(del, SIGNAL(clicked()), this, SLOT(deleteClicked()));
@@ -134,6 +142,11 @@ Tab::Tab(QWidget* parent, Controller* control): QWidget(parent), controller(cont
     connect(this, SIGNAL(auxiliaryShowT()), controller, SLOT(showTreeClicked()));
 
     setLayout(mainLayout);
+}
+
+
+Tab::~Tab(){
+    delete tree;
 }
 
 
@@ -227,6 +240,11 @@ BinarySearchTab::BinarySearchTab(QWidget *parent, Controller* control): Tab(pare
     connect(this, SIGNAL(auxiliaryPlus()), controller, SLOT(plusClicked()));
     connect(minus, SIGNAL(clicked()), this, SLOT(minusClicked()));
     connect(this, SIGNAL(auxiliaryMinus()), controller, SLOT(minusClicked()));
+}
+
+BinarySearchTab::~BinarySearchTab(){
+    if(tree2)
+        delete tree2;
 }
 
 void BinarySearchTab::keepClicked(){
@@ -334,6 +352,11 @@ AvlTab::AvlTab(QWidget *parent, Controller* control): Tab(parent, control){
     connect(this, SIGNAL(auxiliarySubTPre()), controller, SLOT(subTPreClicked()));
     connect(balancedSubTreeInv, SIGNAL(clicked()), this, SLOT(subTInvClicked()));
     connect(this, SIGNAL(auxiliarySubTInv()), controller, SLOT(subTInvClicked()));
+}
+
+
+AvlTab::~AvlTab(){
+    delete tree2;
 }
 
 void AvlTab::subTPreClicked(){
