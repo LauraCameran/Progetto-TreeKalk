@@ -99,11 +99,18 @@ Tab::Tab(QWidget* parent, Controller* control): QWidget(parent), controller(cont
 
     QVBoxLayout* boxl = new QVBoxLayout(this);
 
+    //QGraphicsView::scale(qreal, qreal);
     view = new QGraphicsView(this);
     scene = new QGraphicsScene(this);
 
+
+
     view->setMinimumHeight(300);
     view->setScene(scene);
+
+//    view->verticalScrollBar()->setSliderPosition(0);
+//    view->horizontalScrollBar()->setSliderPosition(0);
+
 
     boxl->addWidget(view);
     //aggiunta dei widget
@@ -489,6 +496,7 @@ void Tab::cleanScene(){ //ripulisce la scena e resetta la dimensione
 //TWO THREE TAB
 
 void TwoThreeTab::update_draw(BinaryTree* tree){
+    std::cout<<tree<<std::endl;
      if(tree->returnRoot() != nullptr){
         cleanScene(); //cancello il disegno prima
         view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);

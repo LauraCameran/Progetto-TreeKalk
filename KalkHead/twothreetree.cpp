@@ -303,6 +303,8 @@ void TwoThreeTree::split(node* n, Tipo* t){
                 boss->right = p;
                 if(boss->parent == nullptr)
                     root = boss;
+                else
+                    grandad->left = boss;
             }
             if(c == 3){
                 node* tmp = new node(n->info->copia());
@@ -335,6 +337,8 @@ void TwoThreeTree::split(node* n, Tipo* t){
                 boss->right = n->parent;
                 if(boss->parent == nullptr)
                     root = boss;
+                else
+                    grandad->right = boss;
 
             }
         }
