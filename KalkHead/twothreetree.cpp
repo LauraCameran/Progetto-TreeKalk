@@ -13,7 +13,6 @@ TwoThreeTree::node::~node(){
         delete other;
 }
 
-//TwoThreeTree::TwoThreeTree(node* r): root(copia(r)){}
 
 TwoThreeTree::~TwoThreeTree(){
     delete dynamic_cast<node*>(root);
@@ -294,7 +293,7 @@ void TwoThreeTree::split(node* n, Tipo* t){
                 p->right->parent = p;
 
                 n->parent->right = tmp;
-                //n_parent->middle = nullptr;
+                n_parent->middle = nullptr;
 
                 node* boss = new node(midParent->copia(), grandad);
 
