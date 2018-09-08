@@ -1,6 +1,7 @@
 #ifndef TIPO_H
 #define TIPO_H
 #include <iostream>
+#include "exception.h"
 
 class Tipo{
 public:
@@ -20,7 +21,6 @@ public:
 
     virtual void print(std::ostream&) const =0;
 
-    // Distruttore virtuale
     virtual ~Tipo(){}
     virtual std::string to_string() const =0;
     virtual Tipo* copia() const =0;

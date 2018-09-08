@@ -6,13 +6,15 @@
 
 
 class Node : public QGraphicsEllipseItem{
+
 protected:
     const unsigned int dimension = 25;
     QString text;
+
 public:
     Node(QString, QGraphicsItem* = Q_NULLPTR);
-    virtual ~Node();
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
+    virtual ~Node() {}
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr);
 };
 
 

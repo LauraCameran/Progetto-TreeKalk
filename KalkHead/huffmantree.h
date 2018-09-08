@@ -13,7 +13,7 @@ private:
     std::map<std::string, int> dict;
 
     // metodi virtuali
-    nodo* copia( nodo*, nodo* = nullptr);
+    nodo* copia(nodo*, nodo* = nullptr);
     nodo* searchNodo(nodo*, const Tipo*) const;
 
     // Metodo usato da std::sort
@@ -32,17 +32,12 @@ public:
     ~HuffmanTree();
 
     // Metodi virtuali puri da implementare
-
     HuffmanTree& operator=(BinaryTree const&);
     void insert(Tipo*);
+    void deleteNodo(const Tipo*);
     Tipo* search(const Tipo*) const;
-
     Huffman* max() const;
     Huffman* min() const;
-
-
-
-    void deleteNodo(const Tipo*);
 
     // Funzionalita aggiuntive di HuffmanTree
     HuffmanTree* operator+(const HuffmanTree*) const;

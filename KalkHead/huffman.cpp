@@ -26,7 +26,6 @@ bool Huffman::checkKey(const Tipo* x) const{
         return false;
 }
 
-
 Huffman* Huffman::copia() const{
     return new Huffman(frequency, data);
 }
@@ -63,7 +62,6 @@ Huffman& Huffman::operator =(const Tipo& t){
     return *this;
 }
 
-
 bool Huffman::operator <(const Tipo* t) const{
     const Huffman* p = dynamic_cast<const Huffman*>(t);
     if(t){
@@ -84,7 +82,6 @@ std::ostream& operator<<(std::ostream& os, const Huffman* t){
     }
     return os;
 }
-
 
 std::string Huffman::getData() const{
     return data;

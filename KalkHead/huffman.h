@@ -1,7 +1,6 @@
 #ifndef HUFFMAN_H
 #define HUFFMAN_H
 #include "tipo.h"
-#include "exception.h"
 #include <string>
 
 class Huffman: public Tipo{
