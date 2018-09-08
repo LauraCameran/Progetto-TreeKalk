@@ -22,10 +22,6 @@ public:
 
     void insert(Tipo*);
     Tipo* search(const Tipo*) const;
-    // MALEDETTA QUELLA VOLTA CHE IL SIGNORE
-    // HA CREATO STE BESTIE DI DONNE DA UNA NOSTRA COSTOLA
-    // VIENI GIU A RIPRENDERTELE MALEDETTO IL SIGNORE
-    // void elim(Tipo*);
     Tipo* max() const;
     Tipo* min() const;
 
@@ -47,11 +43,6 @@ public:
 
 private:
 
-
-
-
-
-    // Metodi virtuali
     node* copia( nodo*,  nodo* = nullptr);
     void insertNodo(nodo*, Tipo*);
     node* searchNodo(nodo*, const Tipo*) const;

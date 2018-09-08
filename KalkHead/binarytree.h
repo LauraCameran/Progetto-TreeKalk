@@ -21,6 +21,7 @@ public:
 
 
     };
+
     //PER GUI
     int max_depth() const;
     virtual int height(nodo*) const;
@@ -28,13 +29,7 @@ public:
     void elimTree();
 
     virtual ~BinaryTree(){}
-    // Non serve il costruttore se non si può instanziare una classe virtuale pura
-    // Se tolgo il costruttore errore run-time
     BinaryTree():root(nullptr){}
-
-    // Aggiungo assegnazione virtuale
-    // Assegnazione virtuale che deve essere controllata
-    // dalle classe figlie con RTTI
 
     virtual void insert(Tipo*) =0;
     virtual Tipo* search(const Tipo*) const =0;
@@ -43,8 +38,6 @@ public:
 
     virtual BinaryTree& operator =(const BinaryTree&);
 
-    // Delete un singolo nodo virtuale poiche le operazioni di delete possono
-    // cambiare a seconda della struttura dell'albero. Es Alberi Rossi/Neri
     virtual void deleteNodo(const Tipo*) =0;
     virtual bool empty() const;
     friend std::ostream& operator <<(std::ostream& os, const BinaryTree* t){
@@ -59,18 +52,12 @@ protected:
     static void distruggi(nodo*);
     // Contatore dei nodi
     static int conta(nodo*);
-
     // Redifinizione del metodo a seconda dei campi dati da copiare
     virtual nodo* copia(nodo*, nodo* = nullptr) =0;
-    // Inserimento new nodo
-//    virtual void insertNodo(nodo*, Tipo*) =0;
     // Search basata sul parametro che si vuole
     virtual nodo* searchNodo(nodo*, const Tipo*) const =0;
 
     virtual void print(std::ostream&, nodo*) const =0;
-
-
-
 
 };
 
