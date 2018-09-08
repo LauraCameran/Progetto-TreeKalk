@@ -194,6 +194,7 @@ void Controller::minClicked(){
 
 }
 
+// clear button
 void Controller::deleteTreeClicked(){
     Tab* senderTab = dynamic_cast<Tab*>(sender());
 
@@ -367,9 +368,12 @@ void Controller::subTInvClicked(){
 }
 
 //TWO THREE
-//[TODO] se cerco di cancellare un nodo normale ECCEZIONE
 void Controller::subPreClicked(){
     TwoThreeTab* senderTab = dynamic_cast<TwoThreeTab*>(sender());
+    if(!senderTab->getTree()->returnRoot()){
+        emit errorTree();
+        return;
+    }
     TwoThreeTree* secT = dynamic_cast<TwoThreeTree*>(senderTab->getTree());
     try{
         TwoThreeTree::node* n = secT->display_other_preorder();
@@ -386,6 +390,10 @@ void Controller::subPreClicked(){
 
 void Controller::subInvClicked(){
     TwoThreeTab* senderTab = dynamic_cast<TwoThreeTab*>(sender());
+    if(!senderTab->getTree()->returnRoot()){
+        emit errorTree();
+        return;
+    }
     TwoThreeTree* secT = dynamic_cast<TwoThreeTree*>(senderTab->getTree());
     try{
         TwoThreeTree::node* n = secT->display_other_invertorder();

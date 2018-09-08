@@ -97,20 +97,17 @@ Tab::Tab(QWidget* parent, Controller* control): QWidget(parent), controller(cont
     tree = nullptr;
     line = new QLineEdit(this);
 
-    QVBoxLayout* boxl = new QVBoxLayout(this);
+    QVBoxLayout* boxl = new QVBoxLayout();  //tolto QWidget padre altrimenti: QLayout: Attempting to add QLayout "" to Tab "", which already has a layout
 
     //QGraphicsView::scale(qreal, qreal);
     view = new QGraphicsView(this);
     scene = new QGraphicsScene(this);
-
-
 
     view->setMinimumHeight(300);
     view->setScene(scene);
 
 //    view->verticalScrollBar()->setSliderPosition(0);
 //    view->horizontalScrollBar()->setSliderPosition(0);
-
 
     boxl->addWidget(view);
     //aggiunta dei widget
@@ -124,8 +121,6 @@ Tab::Tab(QWidget* parent, Controller* control): QWidget(parent), controller(cont
     mainLayout->addWidget(showTree, 3, 2, 1, 1);
     mainLayout->addWidget(delTree, 4, 0, 1, 1);
     //connessioni tra widget
-
-    //connect(line, SIGNAL(returnPressed()), insert, SIGNAL(clicked()));    //PROBLEMA!!!
 
     connect(insert, SIGNAL(clicked()), this, SLOT(insertClicked()));
     connect(this, SIGNAL(auxiliaryIns()), controller, SLOT(insertClicked()));
