@@ -72,8 +72,6 @@ bool Huffman::operator <(const Tipo* t) const{
         else
             return false;
     }
-    // [TODO] what is this ?
-//    throw new BadDynamicCast();
 }
 
 void Huffman::print(std::ostream &os) const{

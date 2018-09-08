@@ -48,8 +48,6 @@ void BinarySearchTree::insertNodo(nodo* x, Tipo* t){
     }
 }
 
-// Copia potrebbe essere un metodo statico ?
-// DEFINITO nella classe base astratta come non virtuale
 BinarySearchTree::nodo* BinarySearchTree::copia(nodo* t, nodo* p){
     if(t){
         BinarySearchTree::nodo* x = new nodo(t->info->copia(), p);
@@ -111,6 +109,9 @@ BinarySearchTree::nodo* BinarySearchTree::searchNodo(nodo* x, const Tipo* t) con
 }
 
 Tipo* BinarySearchTree::search(const Tipo* t) const{
+    if(!(typeid(root->info) == typeid(t)))
+        throw new BadTypeValue();
+
     BinarySearchTree::nodo* p = searchNodo(root, t);
     if(!p)
         throw new NodeNotFound();
@@ -135,9 +136,8 @@ void BinarySearchTree::print(std::ostream& os, nodo* x) const{
 
 
 BinarySearchTree::nodo* BinarySearchTree::maxNodo(nodo* x) const{
-    if(x->right != nullptr){
+    if(x->right != nullptr)
         return maxNodo(x->right);
-    }
     return x;
 }
 
@@ -183,7 +183,6 @@ BinarySearchTree::nodo* BinarySearchTree::somma(const nodo* a, const nodo* b, no
     }
     else
         return nullptr;
-
 }
 
 BinarySearchTree* BinarySearchTree::operator+(const BinarySearchTree* x) const{
@@ -193,26 +192,19 @@ BinarySearchTree* BinarySearchTree::operator+(const BinarySearchTree* x) const{
 }
 
 
-BinarySearchTree::nodo* BinarySearchTree::sottrazione(const nodo* a, const nodo* b) const{
-    // Se non esiste a provo con b
-//    if(!a && b)
-//        // IF nodo a don't exist, just -b
-//        return new nodo(b->info, nullptr, sottrazione(nullptr, b->left), sottrazione(nullptr, b->right));
-
-//    if(!b && a)
-//        return new nodo(a->info, nullptr, sottrazione(a->left, nullptr), sottrazione(a->right, nullptr));
-
-    if(a && b)
-        return new nodo((a->info->operator-(b->info)), nullptr, sottrazione(a->left, b->left), sottrazione(a->right, b->right));
-
+BinarySearchTree::nodo* BinarySearchTree::sottrazione(const nodo* a, const nodo* b, nodo* p) const{
+    if(a && b){
+        nodo* x;
+        x = new nodo((a->info->operator -(b->info)), p, sottrazione(a->left, b->left, x), sottrazione(a->right, b->right, x));
+        return x;
+    }
     else
         return nullptr;
-
 }
 
 BinarySearchTree* BinarySearchTree::operator-(const BinarySearchTree* x) const{
     BinarySearchTree* p = new BinarySearchTree();
-    p->root = sottrazione(root, x->root);
+    p->root = sottrazione(root, x->root, nullptr);
     return p;
 }
 
