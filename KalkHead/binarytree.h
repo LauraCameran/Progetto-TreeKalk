@@ -5,8 +5,6 @@
 #include "intero.h"
 #include "exception.h"
 
-#include "node.h"
-
 class BinaryTree{
 
 public:
@@ -18,8 +16,6 @@ public:
         nodo():info(),parent(nullptr),left(nullptr),right(nullptr){}
         nodo(Tipo* i, nodo* p = nullptr, nodo* sx = nullptr, nodo* dx = nullptr):info(i), parent(p), left(sx), right(dx){}
         virtual ~nodo();
-
-
     };
 
     //PER GUI

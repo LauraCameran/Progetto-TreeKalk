@@ -24,7 +24,6 @@ void BinarySearchTree::insert(Tipo* t){
         root = new BinarySearchTree::nodo(t->copia());
 }
 
-
 void BinarySearchTree::insertNodo(nodo* x, Tipo* t){
     if(x){
         if(t->operator <(x->info)){
@@ -132,8 +131,6 @@ void BinarySearchTree::print(std::ostream& os, nodo* x) const{
     }
 }
 
-
-
 BinarySearchTree::nodo* BinarySearchTree::maxNodo(nodo* x) const{
     if(x->right != nullptr){
         return maxNodo(x->right);
@@ -157,7 +154,6 @@ Tipo* BinarySearchTree::min() const{
     BinarySearchTree::nodo* p = minNodo(root);
     return p->info->copia();
 }
-
 
 BinarySearchTree::nodo* BinarySearchTree::succ(const nodo* x) const{
     if(x->right != nullptr){

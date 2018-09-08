@@ -1,8 +1,5 @@
 #include "avltree.h"
 
-//AVLTree::node::~node(){}
-
-
 AVLTree::AVLTree(const AVLTree& t){
     root = copia(t.root);
 }
@@ -11,12 +8,8 @@ AVLTree::~AVLTree(){
     distruggi(root);
 }
 
-// Guardare cosa passa in p alla prima chiamata
-// Mi fido della laura (1)
-// sboraghe sora
-AVLTree::node* AVLTree::copia( nodo* t, nodo* p){
+AVLTree::node* AVLTree::copia(nodo* t, nodo* p){
     node* t_cast = dynamic_cast<node*>(t);
-
     if(t_cast){
         node* x = new node(t->info->copia(), p);
         x->balance = t_cast->balance;
@@ -48,10 +41,6 @@ void AVLTree::insertNodo(nodo* x, Tipo* t){
     rebalance(x_cast);
 }
 
-// Invece di fare il dynamic_cast subito ogni chiamata ricorsiva
-// Fare il dynamic_cast solo quando si trova il nodo interessato
-// Poiche il la ricerca usa solo info
-// ok
 AVLTree::node* AVLTree::searchNodo(nodo* x, const Tipo* t) const{
     if(!x)
         return nullptr;
@@ -67,9 +56,6 @@ AVLTree::node* AVLTree::searchNodo(nodo* x, const Tipo* t) const{
     }
 }
 
-// prima di fare dynamic_cast di x->parent
-// CHECK IF EXIST PARENT
-// Perche fare quel dynamic cast ad ogni ciclo while
 AVLTree::node* AVLTree::succ(node* x){
     if(x->right != nullptr)
         return minNodo(x->right);
@@ -82,7 +68,6 @@ AVLTree::node* AVLTree::succ(node* x){
         return p;
     }
 }
-
 
 void AVLTree::deleteNodo(const Tipo* t){
     node* x = nullptr;
@@ -112,7 +97,6 @@ void AVLTree::deleteNodo(const Tipo* t){
         y->parent->right = x;
 
     if(y != z)
-        //z->info->operator=(*(y->info->copia()));
         z->info = y->info->copia();
 
     delete y;
@@ -130,8 +114,6 @@ void AVLTree::deleteNodo(const Tipo* t){
     }
 
 }
-
-
 
 AVLTree::node* AVLTree::maxNodo(nodo* x) const{
     if(x->right != nullptr){
@@ -176,8 +158,7 @@ Tipo* AVLTree::min() const{
     throw new TreeInexistent();
 }
 
-
-int AVLTree::height(node* n){
+int AVLTree::height(node* n) const{
     if(!n)
         return -1;
     return 1 + std::max(height(dynamic_cast<node*>(n->left)), height(dynamic_cast<node*>(n->right)));
@@ -269,8 +250,6 @@ void AVLTree::rebalance(node* n){
         root = n;
 }
 
-
-
 AVLTree::node* AVLTree::invertorder(node* n) const{
     if(n->balance == 0)
         return n;
@@ -284,8 +263,6 @@ AVLTree::node* AVLTree::invertorder(node* n) const{
     return nullptr;
 }
 
-
-
 AVLTree::node* AVLTree::preorder(node* n) const{
     if(n->balance == 0){
         return n;
@@ -298,10 +275,11 @@ AVLTree::node* AVLTree::preorder(node* n) const{
     return nullptr;
 }
 
-AVLTree* AVLTree::subtree_preorder() {
+AVLTree* AVLTree::subtree_preorder(){
     node* radix = preorder(dynamic_cast<node*>(root));
     if(!radix){
         throw new NodeNotFound();
+        return nullptr;
     }
     AVLTree* subTree = new AVLTree();
     subTree->root = copia(radix);
@@ -309,7 +287,7 @@ AVLTree* AVLTree::subtree_preorder() {
 }
 
 
-AVLTree* AVLTree::subtree_invertorder() {
+AVLTree* AVLTree::subtree_invertorder(){
     nodo* radix = invertorder(dynamic_cast<node*>(root));
     if(!radix){
         throw new NodeNotFound();
@@ -319,10 +297,6 @@ AVLTree* AVLTree::subtree_invertorder() {
     return subTree;
 }
 
-
-
-// dynamic_cast di null ritorna null ?
-// L: ovviamente
 void AVLTree::print(std::ostream& os, nodo* x) const{
     node* x_cast = dynamic_cast<node*>(x);
     if(x_cast){
@@ -338,7 +312,6 @@ void AVLTree::print(std::ostream& os, nodo* x) const{
 }
 
 std::ostream& operator<<(std::ostream& os, const AVLTree* t){
-    //std::cout << "operator << " << std::endl;
     t->print(os, t->root);
     return os;
 }

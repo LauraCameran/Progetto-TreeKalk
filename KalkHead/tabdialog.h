@@ -16,6 +16,7 @@
 #include <QString>
 
 class Controller;
+class Node;
 
 class TabDialog : public QDialog{
     Q_OBJECT
@@ -33,13 +34,11 @@ public slots:
     void errTreeSlot();
     void errDelSlot();
 
-
 private:
     QTabWidget *tabWidget;
     QDialogButtonBox *buttonBox;
     Controller* controller;
 };
-
 
 
 class Tab : public QWidget{
@@ -67,7 +66,6 @@ public slots:
     void deleteTreeClicked();
     void showTreeClicked();
 
-
 signals:
     void auxiliaryIns();
     void auxiliaryLine();
@@ -79,13 +77,10 @@ signals:
     void auxiliaryShowT();
 
 protected:
-
+    BinaryTree* tree;
     Controller* controller;
     QGridLayout* mainLayout;
     QLineEdit* line;
-
-    BinaryTree* tree;
-
     QGraphicsView* view;
     QGraphicsScene* scene;
     QPushButton* insert;
@@ -100,7 +95,6 @@ protected:
 
 class BinarySearchTab : public Tab{
     Q_OBJECT
-
 public:
     BinarySearchTab(QWidget *parent = nullptr, Controller* control = nullptr);
     void setTree(BinarySearchTree*);
@@ -128,7 +122,6 @@ private:
 
 class AvlTab : public Tab{
     Q_OBJECT
-
 public:
     AvlTab(QWidget *parent = 0, Controller* control=0);
     void setSecondTree(AVLTree*);
@@ -152,7 +145,6 @@ private:
 
 class HuffmanTab : public Tab{
     Q_OBJECT
-
 public:
     HuffmanTab(QWidget* parent=0, Controller* control=0);
     void setTree(HuffmanTree*);
@@ -175,13 +167,11 @@ private:
     QPushButton* compress;
     QPushButton* keep;
     BinaryTree* tree2;
-
 };
 
 
 class TwoThreeTab : public Tab{
     Q_OBJECT
-
 public:
     explicit TwoThreeTab(QWidget *parent = 0, Controller* control=0);
     ~TwoThreeTab();
@@ -200,8 +190,6 @@ private:
     QPushButton* threeNodePre;
     QPushButton* threeNodeInv;
 };
-
-
 
 
 #endif // TABDIALOG_H

@@ -31,7 +31,6 @@ Intero* Intero::operator+(const Tipo* t) const{
         return nullptr;
 }
 
-
 Intero* Intero::operator-(const Tipo* t) const{
     const Intero* p = dynamic_cast<const Intero*>(t);
     if(p){
@@ -52,7 +51,6 @@ Intero* Intero::operator*(const Tipo* t) const{
     }
 }
 
-// Eccezione divide by 0 da gestire
 Intero* Intero::operator/(const Tipo* t) const{
     const Intero* p = dynamic_cast<const Intero*>(t);
     if(p){
@@ -96,7 +94,6 @@ bool Intero::operator>(const Tipo* i) const{
     }
 }
 
-
 bool Intero::operator<=(const Tipo* t) const{
     const Intero* p = dynamic_cast<const Intero*>(t);
 
@@ -105,7 +102,6 @@ bool Intero::operator<=(const Tipo* t) const{
     else
         return false;
 }
-
 
 bool Intero::operator>=(const Tipo* t) const{
     const Intero* p = dynamic_cast<const Intero*>(t);

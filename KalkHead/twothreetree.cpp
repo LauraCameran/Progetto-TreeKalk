@@ -1,5 +1,6 @@
 #include "twothreetree.h"
 
+//NODE
 TwoThreeTree::node::node(Tipo* i, nodo* p, nodo* l, nodo* r, Tipo* o, nodo* m):nodo(i, p, l, r), other(o), middle(m){
     if(i)
         num = 1;
@@ -7,13 +8,13 @@ TwoThreeTree::node::node(Tipo* i, nodo* p, nodo* l, nodo* r, Tipo* o, nodo* m):n
         num = 0;
 }
 
-
 TwoThreeTree::node::~node(){
     if(num == 2)
         delete other;
 }
 
 
+//TWO THREE
 TwoThreeTree::~TwoThreeTree(){
     delete dynamic_cast<node*>(root);
 }
@@ -22,7 +23,6 @@ TwoThreeTree::TwoThreeTree(const TwoThreeTree& t){
     root = copia(t.root);
 }
 
-// Ridifinizioni di metodi statici
 void TwoThreeTree::distruggi(nodo* n){
     node* n_cast = dynamic_cast<node*>(n);
     if(n_cast){
@@ -39,7 +39,6 @@ int TwoThreeTree::conta(nodo* n){
     else
         return 0;
 }
-
 
 TwoThreeTree::node* TwoThreeTree::copia( nodo* t, nodo* p){
     node* t_cast = dynamic_cast<node*>(t);
@@ -58,7 +57,6 @@ TwoThreeTree::node* TwoThreeTree::copia( nodo* t, nodo* p){
     else
         return nullptr;
 }
-
 
 void TwoThreeTree::insertNodo(nodo* x, Tipo* t){
     node* x_cast = dynamic_cast<node*>(x);
@@ -105,9 +103,6 @@ void TwoThreeTree::insertNodo(nodo* x, Tipo* t){
     }
 }
 
-
-// FATTO
-
 TwoThreeTree::node* TwoThreeTree::searchNodo(nodo* x, const Tipo* t) const{
     node* x_cast = dynamic_cast<node*>(x);
 
@@ -115,7 +110,6 @@ TwoThreeTree::node* TwoThreeTree::searchNodo(nodo* x, const Tipo* t) const{
         if(t->operator==(x_cast->other) || t->operator==(x_cast->info)){
             return x_cast;
         }
-        // t > info NO minore... PECCATO CEH DC NON E DEFINITO MAGGIORE
         if(t->operator>(x_cast->info) && t->operator<(x_cast->other))
             return searchNodo(x_cast->middle, t);
         if(t->operator<(x_cast->info))
@@ -125,13 +119,9 @@ TwoThreeTree::node* TwoThreeTree::searchNodo(nodo* x, const Tipo* t) const{
                 return searchNodo(x->right, t);
         }
     }
-    // check nullptr;
     return nullptr;
 }
 
-
-// tolto elim
-// FATTO
 void TwoThreeTree::deleteNodo(const Tipo* t){
     node* aux = searchNodo(dynamic_cast<node*>(root), t);
     if(!aux)
@@ -160,20 +150,15 @@ void TwoThreeTree::deleteNodo(const Tipo* t){
 
 }
 
-
-
-
 TwoThreeTree::node* TwoThreeTree::maxNodo(nodo* x) const{
     node* x_cast = dynamic_cast<node*>(x);
     if(!x_cast)
         return nullptr;
-
     if(x_cast->right != nullptr)
         return maxNodo(x_cast->right);
 
     return x_cast;
 }
-
 
 TwoThreeTree::node* TwoThreeTree::minNodo(nodo* x) const{
     node* x_cast = dynamic_cast<node*>(x);
@@ -185,7 +170,6 @@ TwoThreeTree::node* TwoThreeTree::minNodo(nodo* x) const{
 
     return x_cast;
 }
-
 
 void TwoThreeTree::print(std::ostream& os, nodo* n) const{
     node* x = dynamic_cast<node*>(n);
@@ -209,8 +193,6 @@ void TwoThreeTree::print(std::ostream& os, nodo* n) const{
         os << "_";
 }
 
-
-
 void TwoThreeTree::insert(Tipo* t){
     if(root)
         insertNodo(dynamic_cast<node*>(root), t->copia());
@@ -218,7 +200,6 @@ void TwoThreeTree::insert(Tipo* t){
         root = new node(t->copia());
 }
 
-// Ritorno il campo info
 Tipo* TwoThreeTree::search(const Tipo* t) const{
     node* p = searchNodo(dynamic_cast<node*>(root), t);
     if(!p)
@@ -249,10 +230,6 @@ Tipo* TwoThreeTree::min() const{
     return p->info->copia();
 }
 
-
-
-// CHECK COPIATO TUTTO
-// DON'T TRUST
 void TwoThreeTree::split(node* n, Tipo* t){
     Tipo* mid = searchMiddle(n, t);
     if(n->parent){
@@ -345,7 +322,6 @@ void TwoThreeTree::split(node* n, Tipo* t){
     }
 }
 
-// FATTO
 Tipo* TwoThreeTree::searchMiddle(node* n, Tipo* t){
     if(t->operator<=(n->info)){
         Tipo* aux = n->info;
@@ -362,7 +338,6 @@ Tipo* TwoThreeTree::searchMiddle(node* n, Tipo* t){
     return t;
 }
 
-// FATTO
 int TwoThreeTree::child(node* n) const{
     if(n->parent->left == n)
         return 1;
@@ -375,7 +350,6 @@ int TwoThreeTree::child(node* n) const{
     return 0;
 }
 
-// FATTO
 void TwoThreeTree::addInfo(node* n, Tipo* t){
     if(t->operator<(n->info)){
         n->other = n->info;
@@ -387,11 +361,8 @@ void TwoThreeTree::addInfo(node* n, Tipo* t){
     n->num = 2;
 }
 
-// FATTO
-// [TODO] GARBAGE SE OTHER punta a un oggetto ??
 void TwoThreeTree::removeOther(node* n){
-    //n->other = nullptr;
-    delete n->other;    //RISOLVE? DIO CAN
+    delete n->other;
     n->other = nullptr;
     n->num = 1;
 }
@@ -411,7 +382,6 @@ TwoThreeTree::node* TwoThreeTree::preorder(node* n) const{
 
     return nullptr;
 }
-
 
 TwoThreeTree::node* TwoThreeTree::display_other_preorder() const{
     node* auxNode = preorder(dynamic_cast<node*>(root));
@@ -433,15 +403,14 @@ TwoThreeTree::node* TwoThreeTree::invertorder(node* n) const{
     return nullptr;
 }
 
-// A COSA CAZZO GLI SERVE ?
 TwoThreeTree::node* TwoThreeTree::display_other_invertorder() const{
     node* auxNode = invertorder(dynamic_cast<node*>(root));
+
     if(!auxNode){
         throw new NodeNotFound();
     }
     return auxNode;
 }
-
 
 std::ostream& operator<<(std::ostream& os, const TwoThreeTree* t){
     t->print(os, t->root);

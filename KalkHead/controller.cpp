@@ -4,7 +4,6 @@
 #include <QString>
 #include <QMessageBox>
 
-
 using std::cout;
 using std::endl;
 
@@ -13,11 +12,9 @@ Controller::Controller(TabDialog* w): window(w){
     connect(this, SIGNAL(secondTreeError()), window, SLOT(errSecondTreeSlot()));
     connect(this, SIGNAL(errorNode()), window, SLOT(errNodeSlot()));
     connect(this, SIGNAL(errTree()), window, SLOT(errTreeSlot()));
-    // connect(this, SIGNAL(testingHuffman()), window, SLOT(triggerHuffmanTest()));
     connect(this, SIGNAL(errorTree()), window, SLOT(errTreeSlot()));
     connect(this, SIGNAL(errorDel()), window, SLOT(errDelSlot()));
 }
-
 
 Controller::~Controller(){}
 
@@ -83,7 +80,6 @@ void Controller::deleteClicked(){
 
             delete tmp;
 
-            std::cout << senderTab->getTree()->empty() << std::endl;
             if(senderTab->getTree()->empty()){
                 senderTab->cleanScene();
              }
@@ -175,6 +171,7 @@ void Controller::maxClicked(){
         Tipo* auxT = t->max();
         Node* nod = new Node(QString::fromStdString(auxT->to_string()));
         senderTab->drawOneNode(nod);
+        delete auxT;
     }
     else{
         emit errorTree();
@@ -187,6 +184,7 @@ void Controller::minClicked(){
         Tipo* auxT = t->min();
         Node* nod = new Node(QString::fromStdString(auxT->to_string()));
         senderTab->drawOneNode(nod);
+        delete auxT;
     }
     else{
         emit errorTree();
@@ -321,6 +319,19 @@ void Controller::plusClicked(){
     }
 }
 
+void Controller::compressClicked(){
+
+    HuffmanTab* senderTab = dynamic_cast<HuffmanTab*>(sender());
+    if(!senderTab->getTree() || !senderTab->getTree()->returnRoot()){
+        emit errorTree();
+        return;
+    }
+
+    std::map<std::string, std::string> dict = dynamic_cast<HuffmanTree*>(senderTab->getTree())->compression();
+    senderTab->drawTextCompression(dict);
+
+}
+
 void Controller::minusClicked(){
     BinarySearchTab* senderTab = dynamic_cast<BinarySearchTab*>(sender());
     if(!senderTab->getTree()->returnRoot()){
@@ -348,6 +359,7 @@ void Controller::subTPreClicked(){
         if(auxT)
             senderTab->setSecondTree(auxT);
         senderTab->update_draw(senderTab->getSecondTree());
+        delete auxT;
     }
     else
         emit errorTree();
@@ -361,6 +373,7 @@ void Controller::subTInvClicked(){
         if(auxT)
             senderTab->setSecondTree(auxT);
         senderTab->update_draw(senderTab->getSecondTree());
+        delete auxT;
     }
     else
         emit errorTree();
@@ -387,7 +400,7 @@ void Controller::subPreClicked(){
         emit errorNode();
     }
 }
-
+//TODO check copia nodo linea 413
 void Controller::subInvClicked(){
     TwoThreeTab* senderTab = dynamic_cast<TwoThreeTab*>(sender());
     if(!senderTab->getTree()->returnRoot()){
@@ -406,18 +419,5 @@ void Controller::subInvClicked(){
     catch(NodeNotFound* e){
         emit errorNode();
     }
-
-}
-
-void Controller::compressClicked(){
-
-    HuffmanTab* senderTab = dynamic_cast<HuffmanTab*>(sender());
-    if(!senderTab->getTree() || !senderTab->getTree()->returnRoot()){
-        emit errorTree();
-        return;
-    }
-
-    std::map<std::string, std::string> dict = dynamic_cast<HuffmanTree*>(senderTab->getTree())->compression();
-    senderTab->drawTextCompression(dict);
 
 }

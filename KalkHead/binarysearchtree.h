@@ -5,9 +5,6 @@
 class BinarySearchTree: public BinaryTree{
 
 private:
-//    using BinaryTree::nodo;
-    //    using typename BinaryTree::nodo;
-//    using BinaryTree::root;
 
     nodo* succ(const nodo*) const;
     nodo* pred(const nodo*) const;
@@ -31,16 +28,13 @@ public:
     ~BinarySearchTree();
     BinarySearchTree(const BinarySearchTree&);
 
-
     void insert(Tipo*);
     Tipo* search(const Tipo*) const;
-
     Tipo* max() const;
     Tipo* min() const;
 
     // Assegnazione virtuale
     BinarySearchTree& operator=(const BinaryTree&);
-
 
     // Operatori
     BinarySearchTree* operator+(const BinarySearchTree*) const;

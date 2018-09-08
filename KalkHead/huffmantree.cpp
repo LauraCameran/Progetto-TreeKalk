@@ -1,7 +1,7 @@
 #include "huffmantree.h"
 #include <vector>
 #include <algorithm>
-#include "exception.h"
+//#include "exception.h"
 
 HuffmanTree::HuffmanTree(const HuffmanTree &t){
     root = copia(t.root);
@@ -23,7 +23,6 @@ HuffmanTree::nodo* HuffmanTree::copia( nodo* t, nodo* p){
     else
         return nullptr;
 }
-
 
 // A finish tree have n nodes and n-1 internal nodes
 // Don't omits unused symbols
@@ -60,8 +59,6 @@ void HuffmanTree::buildTree(std::map<std::string, int>& d){
     std::vector<HuffmanTree::nodo*> queue;
     queue.reserve(d.size());
 
-
-
     for(auto it = d.begin(); it != d.end(); ++it)
         queue.push_back(new HuffmanTree::nodo(new Huffman(it->second, it->first)));
 
@@ -86,7 +83,6 @@ void HuffmanTree::buildTree(std::map<std::string, int>& d){
 
         queue.push_back(t);
     }
-
     root = (*queue.begin());
 
     // Se d != dict (non passato da costruttore) then copio anche il dict
@@ -94,7 +90,6 @@ void HuffmanTree::buildTree(std::map<std::string, int>& d){
         dict = d;
     }
 }
-
 
 void HuffmanTree::print(std::ostream& os, nodo* x) const{
     if(x){
@@ -108,7 +103,6 @@ void HuffmanTree::print(std::ostream& os, nodo* x) const{
     else
         os << "_";
 }
-
 
 Huffman* HuffmanTree::max() const{
     auto save = dict.begin();
@@ -131,8 +125,6 @@ Huffman* HuffmanTree::min() const{
     return new Huffman(save->second, save->first);
 }
 
-
-
 bool HuffmanTree::compare(const nodo* a,const nodo* b) {
     if(!a || !b)
         return false;
@@ -143,7 +135,6 @@ std::ostream& operator<<(std::ostream& os, const HuffmanTree* x){
     x->print(os, x->root);
     return os;
 }
-
 
 HuffmanTree& HuffmanTree::operator=(const BinaryTree& t){
     const HuffmanTree& p = dynamic_cast<const HuffmanTree&>(t);
@@ -222,7 +213,6 @@ HuffmanTree::nodo* HuffmanTree::searchNodo(nodo* x, const Tipo* t) const{
     }
 }
 
-
 Tipo* HuffmanTree::search(const Tipo* x) const{
     // Verifico se un certo nodo Huffman e presente nell'albero
     HuffmanTree::nodo* s = searchNodo(root, x);
@@ -232,13 +222,9 @@ Tipo* HuffmanTree::search(const Tipo* x) const{
     return s->info->copia();
 }
 
-// problema del insertNodo
-//void HuffmanTree::insertNodo(nodo* x, Tipo* t){}
-
 // Si potrebbe aggiungere il valore Huffman al dizionario
 // e ricostruire l'albero
 void HuffmanTree::insert(Tipo* x){}
-
 
 void HuffmanTree::deleteNodo(const Tipo *x){
     const Huffman* x_cast = dynamic_cast<const Huffman*>(x);
@@ -255,11 +241,7 @@ void HuffmanTree::deleteNodo(const Tipo *x){
             check = true;
         ++it;
     }
-
-
-
     // Ricostruisci albero dal dict
-
     if(check){
         it--;
         dict.erase(it);
@@ -267,5 +249,4 @@ void HuffmanTree::deleteNodo(const Tipo *x){
     }
     else
         throw new NodeNotFound("Huffman::search", "Node Not Found");
-
 }

@@ -29,7 +29,6 @@ BinaryTree::nodo::~nodo(){
 }
 
 bool BinaryTree::empty() const{
-
     if(root == nullptr){
         std::cout << "INSIDE EMPTY" << std::endl;
         return true;
@@ -38,8 +37,8 @@ bool BinaryTree::empty() const{
         return false;
     }
 }
-//PER GUI
 
+//PER GUI
 int BinaryTree::max_depth() const{
     return height(root);
 }

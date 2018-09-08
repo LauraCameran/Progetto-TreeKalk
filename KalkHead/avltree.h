@@ -1,13 +1,10 @@
 #ifndef AVLTREE_H
 #define AVLTREE_H
 #include "binarytree.h"
-#include "exception.h"
 
 class AVLTree: public BinaryTree{
 
-
 public:
-
 
     class node: public BinaryTree::nodo{
     public:
@@ -28,7 +25,6 @@ public:
     // Funzionalità di AVL
     // Trova il primo sottoalbero bilanciato in ordine prefisso
     AVLTree* subtree_preorder();
-
     //trova il primo sottoalbero bilanciato in ordine "inverso"
     //ovvero guardando prima a dx, poi a sx
     AVLTree* subtree_invertorder();
@@ -40,10 +36,10 @@ public:
     friend std::ostream& operator<<(std::ostream&, const AVLTree*);
 
 
-
 private:
 
-    node* copia( nodo*,  nodo* = nullptr);
+    //Metodi virtuali
+    node* copia(nodo*,  nodo* = nullptr);
     void insertNodo(nodo*, Tipo*);
     node* searchNodo(nodo*, const Tipo*) const;
     node* maxNodo(nodo*) const;
@@ -57,8 +53,9 @@ private:
     node* rotateLeftThenRight(node*);
     node* rotateRightThenLeft(node*);
     void rebalance(node*);
-    int height(node*);
+    int height(node*) const;
 
+    //Funzionalità aggiuntive di AVL
     node* invertorder(node*) const;
     node* preorder(node*) const;
 

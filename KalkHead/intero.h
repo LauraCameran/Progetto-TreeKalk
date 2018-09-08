@@ -1,7 +1,6 @@
 #ifndef INTERO_H
 #define INTERO_H
 #include "tipo.h"
-#include "exception.h"
 
 class Intero: public Tipo{
 

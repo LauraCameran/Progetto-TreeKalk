@@ -1,14 +1,11 @@
 ﻿#include "tabdialog.h"
 
-#include <QFileInfo>
 #include <QVBoxLayout>
 #include <QDebug>
 #include <QList>
 #include <QtMath>
 #include <QPushButton>
 #include <QMessageBox>
-#include <QString>
-#include <QTimeLine>
 
 TabDialog::TabDialog(/*const QString &fileName, */QWidget *parent): QDialog(parent){
     controller = new Controller(this);
@@ -33,7 +30,6 @@ TabDialog::TabDialog(/*const QString &fileName, */QWidget *parent): QDialog(pare
 TabDialog::~TabDialog(){
     delete controller;
 }
-
 
 void TabDialog::helpPressed(){
     QMessageBox msgBox;
@@ -64,10 +60,12 @@ void TabDialog::triggerHuffmanTest(){
 }
 
 void TabDialog::errNodeSlot(){
-    QMessageBox msg;
-    msg.setText("Node Not Found");
-    msg.setWindowTitle("NODE ERROR");
-    msg.exec();
+    QMessageBox* msg = new QMessageBox(this);
+    // QMessageBox msg(this);
+    msg->setText("Node Not Found");
+    msg->setWindowTitle("NODE ERROR");
+    msg->exec();
+    delete msg;
 }
 
 void TabDialog::errTreeSlot(){
@@ -99,15 +97,10 @@ Tab::Tab(QWidget* parent, Controller* control): QWidget(parent), controller(cont
 
     QVBoxLayout* boxl = new QVBoxLayout();  //tolto QWidget padre altrimenti: QLayout: Attempting to add QLayout "" to Tab "", which already has a layout
 
-    //QGraphicsView::scale(qreal, qreal);
     view = new QGraphicsView(this);
     scene = new QGraphicsScene(this);
-
     view->setMinimumHeight(300);
     view->setScene(scene);
-
-//    view->verticalScrollBar()->setSliderPosition(0);
-//    view->horizontalScrollBar()->setSliderPosition(0);
 
     boxl->addWidget(view);
     //aggiunta dei widget
@@ -121,7 +114,6 @@ Tab::Tab(QWidget* parent, Controller* control): QWidget(parent), controller(cont
     mainLayout->addWidget(showTree, 3, 2, 1, 1);
     mainLayout->addWidget(delTree, 4, 0, 1, 1);
     //connessioni tra widget
-
     connect(insert, SIGNAL(clicked()), this, SLOT(insertClicked()));
     connect(this, SIGNAL(auxiliaryIns()), controller, SLOT(insertClicked()));
     connect(del, SIGNAL(clicked()), this, SLOT(deleteClicked()));
@@ -140,40 +132,9 @@ Tab::Tab(QWidget* parent, Controller* control): QWidget(parent), controller(cont
     setLayout(mainLayout);
 }
 
-
 Tab::~Tab(){
     delete tree;
 }
-
-//void Tab::wheelEvent(QWheelEvent* event){
-//    int numDegrees = event->delta() / 8;
-//    int numSteps = numDegrees / 15;
-//    _numScheduledScalings += numSteps;
-
-//    if(_numScheduledScalings * numSteps < 0)
-//        _numScheduledScalings = numSteps;
-
-//    QTimeLine *anim = new QTimeLine(350, this);
-//    anim->setUpdateInterval(20);
-
-//    connect(anim, SIGNAL(valueChanged(qreal)), SLOT(scalingTime(qreal)));
-//    connect(anim, SIGNAL(finished()), SLOT(animFinished()));
-//    anim->start();
-//}
-
-//void Tab::scalingTime(qreal x){
-//    qreal factor = 1.0 + qreal(_numScheduledScalings)/300.0;
-//    view->scale(factor, factor);
-//}
-
-//void Tab::animFinished(){
-//    if(_numScheduledScalings > 0)
-//        _numScheduledScalings--;
-//    else
-//        _numScheduledScalings++;
-//    sender()->~QObject();
-//}
-
 
 void Tab::linePressed(){
     emit auxiliaryLine();
@@ -228,7 +189,6 @@ BinarySearchTab::BinarySearchTab(QWidget *parent, Controller* control): Tab(pare
     tree = new BinarySearchTree;
     tree2 = new BinarySearchTree;
 
-    //fare connessioni..
     connect(line, SIGNAL(returnPressed()), this, SLOT(insertClicked()));
     connect(keep, SIGNAL(clicked()), this, SLOT(keepClicked()));
     connect(this, SIGNAL(auxiliaryKeep()), controller, SLOT(keepClicked()));
@@ -280,8 +240,6 @@ HuffmanTab::HuffmanTab(QWidget *parent, Controller* control): Tab(parent,control
     tree = nullptr;
     tree2 = nullptr;
 
-    // MANCANO CONNESSIONI ?
-    // [TODO]
     connect(line, SIGNAL(returnPressed()), this, SLOT(insertClicked()));
     connect(keep, SIGNAL(clicked()), this, SLOT(keepClicked()));
     connect(this, SIGNAL(auxiliaryKeep()), controller, SLOT(keepClicked()));
@@ -302,7 +260,6 @@ void HuffmanTab::drawTextCompression(std::map<std::string, std::string>& dict){
     msgBox.setText(s);
     msgBox.setWindowTitle("HuffmanCompression");
     msgBox.exec();
-
 }
 
 void HuffmanTab::keepClicked(){
@@ -340,13 +297,11 @@ AvlTab::AvlTab(QWidget *parent, Controller* control): Tab(parent, control){
     tree = new AVLTree;
     tree2 = new AVLTree;
 
-    //fare connessioni..
     connect(balancedSubTreePre, SIGNAL(clicked()), this, SLOT(subTPreClicked()));
     connect(this, SIGNAL(auxiliarySubTPre()), controller, SLOT(subTPreClicked()));
     connect(balancedSubTreeInv, SIGNAL(clicked()), this, SLOT(subTInvClicked()));
     connect(this, SIGNAL(auxiliarySubTInv()), controller, SLOT(subTInvClicked()));
 }
-
 
 AvlTab::~AvlTab(){
     delete tree2;
@@ -368,6 +323,7 @@ BinaryTree* AvlTab::getSecondTree() const{
     return tree2;
 }
 
+
 TwoThreeTab::TwoThreeTab(QWidget *parent, Controller* control): Tab(parent,control){
     threeNodePre = new QPushButton(tr("3NODE PRE"), this);
     threeNodeInv = new QPushButton(tr("3NODE INVERT"), this);
@@ -375,7 +331,6 @@ TwoThreeTab::TwoThreeTab(QWidget *parent, Controller* control): Tab(parent,contr
     getLayout()->addWidget(threeNodeInv, 4, 2, 1, 1);
     tree = new TwoThreeTree;
 
-    //fare connessioni..
     connect(line, SIGNAL(returnPressed()), this, SLOT(insertClicked()));
     connect(threeNodePre, SIGNAL(clicked()), this, SLOT(subPreClicked()));
     connect(this, SIGNAL(auxiliarySubPre()), controller, SLOT(subPreClicked()));
@@ -394,20 +349,16 @@ void TwoThreeTab::subInvClicked(){
 }
 
 
-
 //TAB
-
-//rifacciamo il disegno da zero
+//rifa sempre il disegno da zero
 void Tab::update_draw(BinaryTree* tree){
 
-
-     if(tree->returnRoot() != nullptr){
+     if(tree->returnRoot() != nullptr){  //se esiste già un nodo radice
         cleanScene(); //cancello il disegno prima
         view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
         int n_livello = tree->max_depth();   //altezza
 
         if(n_livello>0){
-            //qDebug()<<n_livello;
             int altezza_max = n_livello * 110; //spazio da dedicare al disegno in lunghezza
             int n_ultimo = qPow(2,n_livello); //numero di nodi nell'ultima riga
             int larg = 50 + 25*n_ultimo + 30*(n_ultimo-1);
@@ -420,14 +371,12 @@ void Tab::update_draw(BinaryTree* tree){
 
             n->setPos(10+(25*(n_ultimo/2)) + (30*((n_ultimo/2)-1)) + 15, 10); //posizione primo nodo (centrale)
             scene->addItem(n);  //aggiungo la radice alla scena
-
             int h = 50; //altezza che separa ogni nodo dal livello precedente
 
-            addDrawNode(no, n->pos(), h, 1, n_ultimo);
+            addDrawNode(no, n->pos(), h, 1, n_ultimo);  //disegna ricorsivamente tutti i nodi dopo la radice
         }
-        else{   //solo un nodo da disegnare
+        else{   //solo un nodo da disegnare, la radice
             scene->setSceneRect(0,0,90,90);
-            //FARE UNA FUNZIONE PER QUESTE RIGHE
             BinaryTree::nodo* no = tree->returnRoot();
             QString s = QString::fromStdString(no->info->to_string());
             Node* n = new Node(s);
@@ -470,7 +419,7 @@ void Tab::addDrawNode(BinaryTree::nodo* no, QPointF point, int h, int n_livelli,
         double y2 = n->pos().ry();
         scene->addLine(x1, y1, x2, y2);
 
-        addDrawNode(no->right, n->pos(), h+50, n_livelli+1, n_ultimo);
+        addDrawNode(no->right, n->pos(), h+50, n_livelli+1, n_ultimo);  //andiamo a disegnare il prossimo nodo
     }
 }
 
@@ -479,9 +428,6 @@ void Tab::drawOneNode(Node* n){
     scene->addItem(n);
 }
 
-
-
-
 void Tab::cleanScene(){ //ripulisce la scena e resetta la dimensione
     scene->clear();
     scene->setSceneRect(0,0,300,290);
@@ -489,9 +435,7 @@ void Tab::cleanScene(){ //ripulisce la scena e resetta la dimensione
 
 
 //TWO THREE TAB
-
 void TwoThreeTab::update_draw(BinaryTree* tree){
-    std::cout<<tree<<std::endl;
      if(tree->returnRoot() != nullptr){
         cleanScene(); //cancello il disegno prima
         view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
@@ -522,12 +466,11 @@ void TwoThreeTab::update_draw(BinaryTree* tree){
         }
         else{   //solo un nodo da disegnare
             scene->setSceneRect(0,0,90,90);
-            //FARE UNA FUNZIONE PER QUESTE RIGHE
             BinaryTree::nodo* nod = tree->returnRoot();
             TwoThreeTree::node* no = dynamic_cast<TwoThreeTree::node*>(nod);
             QString s = QString::fromStdString(no->info->to_string());
             Node* n;
-            if(no->num == 2){
+            if(no->num == 2){   //se si tratta di un 3-node, bisogna aggiungere al disegno anche il campo other
                 Tipo* auxIntP = no->other;
                 s.append("&");
                 s.append(QString::fromStdString(auxIntP->to_string()));
@@ -543,7 +486,6 @@ void TwoThreeTab::addDrawNode(BinaryTree::nodo* nod, QPointF point, int h, int n
     QPointF temp = point;
 
     if(no->left){
-        //qDebug()<<"TWO TAB left";
         Tipo* auxInt = no->left->info;
         QString s = QString::fromStdString(auxInt->to_string());
         Node* n;
@@ -556,15 +498,14 @@ void TwoThreeTab::addDrawNode(BinaryTree::nodo* nod, QPointF point, int h, int n
         }
         n = new Node(s);
         n->setPos(point.rx()-((25*n_ultimo/(qPow(2,n_livelli)) + 30*n_ultimo/(qPow(2,n_livelli)))/2), h);
-        scene->addItem(n); //aggiungo il nuovo nodo al disegno
-        //coordinate per collegare in modo corretto la linea ai nodi
+        scene->addItem(n);
         double x1 = temp.rx()+12.5;
         double y1 = temp.ry()+25;
         double x2 = n->pos().rx()+12.5;
         double y2 = n->pos().ry();
         scene->addLine(x1, y1, x2, y2);
 
-        addDrawNode(no->left, n->pos(), h+50, n_livelli+1, n_ultimo);  //andiamo a disegnare il prossimo nodo
+        addDrawNode(no->left, n->pos(), h+50, n_livelli+1, n_ultimo);
     }
 
     if(no->middle){
@@ -579,10 +520,10 @@ void TwoThreeTab::addDrawNode(BinaryTree::nodo* nod, QPointF point, int h, int n
         double x2 = n->pos().rx()+12.5;
         double y2 = n->pos().ry();
         scene->addLine(x1, y1, x2, y2);
+        //non c'è mai un nodo dopo quello centrale
     }
 
     if(no->right){
-        //qDebug()<<"TWO TAB right";
         Tipo* auxInt = no->right->info;
         QString s = QString::fromStdString(auxInt->to_string());
         Node* n;
@@ -593,8 +534,7 @@ void TwoThreeTab::addDrawNode(BinaryTree::nodo* nod, QPointF point, int h, int n
         }
         n = new Node(s);
         n->setPos(point.rx()+((25*n_ultimo/(qPow(2,n_livelli)) + 30*n_ultimo/(qPow(2,n_livelli)))/2), h);
-        scene->addItem(n); //aggiungo il nuovo nodo al disegno
-        //coordinate per collegare in modo corretto la linea ai nodi
+        scene->addItem(n);
         double x1 = temp.rx()+12.5;
         double y1 = temp.ry()+25;
         double x2 = n->pos().rx()+12.5;

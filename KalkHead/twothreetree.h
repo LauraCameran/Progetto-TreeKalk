@@ -1,49 +1,41 @@
 #ifndef TWOTHREETREE_H
 #define TWOTHREETREE_H
 #include "binarytree.h"
-#include "exception.h"
 
 class TwoThreeTree: public BinaryTree{
-
 
 public:
 
     class node: public BinaryTree::nodo{
-
     public:
         Tipo* other;    // Secondo campo info
         int num;        // Tiene conto di quanti campi info
         nodo* middle;
         node(Tipo* i = nullptr, nodo* p = nullptr, nodo* l = nullptr, nodo* r = nullptr, Tipo* o = nullptr, nodo* m = nullptr);
         ~node();
-        // node& operator=(const node&);
-        // a cosa gli serve ? perché lo usa ?
-        // node(const node&);
     };
-
-
-    void deleteNodo(const Tipo*);
 
     TwoThreeTree(){}
     TwoThreeTree(const TwoThreeTree&);
     ~TwoThreeTree();
 
     void insert(Tipo*);
+    void deleteNodo(const Tipo*);
     Tipo* search(const Tipo*) const;
     Tipo* max() const;
     Tipo* min() const;
 
+    //Funzionalità aggiuntive di TwoThree
     node* display_other_invertorder() const;
     node* display_other_preorder() const;
-
 
     friend std::ostream& operator<<(std::ostream&, const TwoThreeTree*);
 
 private:
 
-    // Distruttore profondo
+    // Distruttore profondo reimplementato
     static void distruggi(nodo*);
-    // Contatore dei nodi
+    // Contatore dei nodi reimplementato
     static int conta(nodo*);
 
     node* copia( nodo*, nodo* = nullptr);
@@ -55,11 +47,12 @@ private:
 
     void print(std::ostream&, nodo*) const;
 
+    //METODI SPECIFICI DI TWOTHREE
     // Divide i due campi di un nodo, fixando di conseguenza
     // la struttura dell'albero
     void split(node*, Tipo*);
 
-    // Ricerca il campo centrale tra 3(info, other e uno in input) ???
+    // Ricerca il campo centrale tra 3(info, other e uno in input)
     Tipo* searchMiddle(node*, Tipo*);
 
     // return 1 se esiste figlio sx
@@ -70,15 +63,13 @@ private:
 
     // Toglie il secondo campo info
     void removeOther(node*);
+    // se foglia return true
     bool leaf(node*) const;
 
     //node 3-node nel sottoalbero dx
     node* invertorder(node*) const;
     //node 3-node nel sottoalbero sx
     node* preorder(node*) const;
-
-
-
 };
 
 #endif // TWOTHREETREE_H

@@ -10,8 +10,9 @@
 #include "intero.h"
 #include "huffman.h"
 #include "tabdialog.h"
-#include <QObject>
 #include "exception.h"
+#include "node.h"
+#include <QObject>
 
 class TabDialog;
 class AvlTab;
