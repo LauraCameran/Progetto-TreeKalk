@@ -11,16 +11,9 @@ protected:
     QString text;
 public:
     Node(QString, QGraphicsItem* = Q_NULLPTR);
-    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    virtual ~Node();
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
 };
 
-/*
-class ThreeNode : public Node{
-private:
-    QString secondText;
-public:
-    ThreeNode(QString, QString);
-}
-*/
 
 #endif // NODE_H

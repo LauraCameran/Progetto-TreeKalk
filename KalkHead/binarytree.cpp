@@ -56,7 +56,7 @@ BinaryTree::nodo* BinaryTree::returnRoot() const{
 
 void BinaryTree::elimTree(){
     if(root){
-        delete root;
+        distruggi(root);
         root = nullptr;
     }
 }

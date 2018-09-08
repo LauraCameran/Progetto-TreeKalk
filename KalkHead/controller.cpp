@@ -194,6 +194,7 @@ void Controller::minClicked(){
 
 }
 
+// clear button
 void Controller::deleteTreeClicked(){
     Tab* senderTab = dynamic_cast<Tab*>(sender());
 

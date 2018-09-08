@@ -35,13 +35,14 @@ void AVLTree::insertNodo(nodo* x, Tipo* t){
             if(x_cast->left)
                 insertNodo(x_cast->left, t);
             else
-                x_cast->left = new AVLTree::node(t->copia(), x_cast);
+                x_cast->left = new AVLTree::node(t, x_cast);
         }
         else{
             if(x_cast->right)
                 insertNodo(x_cast->right, t);
-            else
-                x_cast->right = new AVLTree::node(t->copia(), x_cast);
+            else{
+                x_cast->right = new AVLTree::node(t, x_cast);
+            }
         }
     }
     rebalance(x_cast);
@@ -148,7 +149,7 @@ AVLTree::node* AVLTree::minNodo(nodo* x) const{
 
 void AVLTree::insert(Tipo* t){
     if(root)
-        insertNodo(dynamic_cast<node*>(root), t);
+        insertNodo(dynamic_cast<node*>(root), t->copia());
     else
         root = new node(t->copia());
 
