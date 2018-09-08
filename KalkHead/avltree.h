@@ -72,7 +72,6 @@ private:
     node* preorder(node*) const;
 
     node* succ(node*);
-    node* pred(node*);
 
 
 };
