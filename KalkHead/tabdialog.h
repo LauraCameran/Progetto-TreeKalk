@@ -3,6 +3,8 @@
 
 #include "controller.h"
 
+
+
 #include <QDialog>
 #include <QTableWidget>
 #include <QDialogButtonBox>
@@ -14,6 +16,8 @@
 #include <QGraphicsView>
 #include <QGraphicsItem>
 #include <QString>
+
+
 
 class Controller;
 

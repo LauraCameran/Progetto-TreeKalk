@@ -1,13 +1,11 @@
 ﻿#include "tabdialog.h"
 
-#include <QFileInfo>
 #include <QVBoxLayout>
 #include <QDebug>
 #include <QList>
 #include <QtMath>
 #include <QPushButton>
 #include <QMessageBox>
-#include <QString>
 #include <QTimeLine>
 
 TabDialog::TabDialog(/*const QString &fileName, */QWidget *parent): QDialog(parent){

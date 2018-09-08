@@ -256,8 +256,6 @@ void HuffmanTree::deleteNodo(const Tipo *x){
         ++it;
     }
 
-
-
     // Ricostruisci albero dal dict
 
     if(check){
