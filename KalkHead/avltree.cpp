@@ -41,6 +41,13 @@ void AVLTree::insertNodo(nodo* x, Tipo* t){
     rebalance(x_cast);
 }
 
+Tipo* AVLTree::search(const Tipo* t) const{
+    node* p = searchNodo(dynamic_cast<node*>(root), t);
+    if(!p)
+        throw new NodeNotFound();
+    return p->info->copia();
+}
+
 AVLTree::node* AVLTree::searchNodo(nodo* x, const Tipo* t) const{
     if(!x)
         return nullptr;
@@ -91,6 +98,7 @@ void AVLTree::deleteNodo(const Tipo* t){
 
     if(y->parent == nullptr)
         root = x;
+
     else if(y == y->parent->left)
         y->parent->left = x;
     else
@@ -115,19 +123,9 @@ void AVLTree::deleteNodo(const Tipo* t){
 
 }
 
-AVLTree::node* AVLTree::maxNodo(nodo* x) const{
-    if(x->right != nullptr){
-        return maxNodo(x->right);
-    }
-    return dynamic_cast<node*>(x);
-}
 
-AVLTree::node* AVLTree::minNodo(nodo* x) const{
-    if(x->left != nullptr){
-        return minNodo(x->left);
-    }
-    return dynamic_cast<node*>(x);
-}
+
+
 
 void AVLTree::insert(Tipo* t){
     if(root)
@@ -137,11 +135,11 @@ void AVLTree::insert(Tipo* t){
 
 }
 
-Tipo* AVLTree::search(const Tipo* t) const{
-    node* p = searchNodo(dynamic_cast<node*>(root), t);
-    if(!p)
-        throw new NodeNotFound();
-    return p->info->copia();
+AVLTree::node* AVLTree::maxNodo(nodo* x) const{
+    if(x->right != nullptr){
+        return maxNodo(x->right);
+    }
+    return dynamic_cast<node*>(x);
 }
 
 Tipo* AVLTree::max() const{
@@ -149,6 +147,13 @@ Tipo* AVLTree::max() const{
         return maxNodo(dynamic_cast<node*>(root))->info->copia();
 
     throw new TreeInexistent();
+}
+
+AVLTree::node* AVLTree::minNodo(nodo* x) const{
+    if(x->left != nullptr){
+        return minNodo(x->left);
+    }
+    return dynamic_cast<node*>(x);
 }
 
 Tipo* AVLTree::min() const{

@@ -12,7 +12,7 @@ protected:
     QString text;
 
 public:
-    Node(QString, QGraphicsItem* = Q_NULLPTR);
+    Node(QString, QGraphicsItem* = nullptr);
     virtual ~Node() {}
     void paint(QPainter* painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr);
 };

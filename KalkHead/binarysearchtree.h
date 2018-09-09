@@ -15,7 +15,7 @@ private:
 
     // non fa side-effect sull'oggetto di invocazione
     nodo* somma(const nodo*, const nodo*, nodo* p) const;
-    nodo* sottrazione(const nodo*, const nodo*) const;
+    nodo* sottrazione(const nodo*, const nodo*, nodo* p) const;
 
     nodo* maxNodo(nodo*) const;
     nodo* minNodo(nodo*) const;

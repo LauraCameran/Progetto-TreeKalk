@@ -6,6 +6,7 @@
 #include <QtMath>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QTimeLine>
 
 TabDialog::TabDialog(/*const QString &fileName, */QWidget *parent): QDialog(parent){
     controller = new Controller(this);

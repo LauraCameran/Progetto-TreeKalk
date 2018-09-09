@@ -52,6 +52,7 @@ private:
     node* rotateRight(node*);
     node* rotateLeftThenRight(node*);
     node* rotateRightThenLeft(node*);
+
     void rebalance(node*);
     int height(node*) const;
 
