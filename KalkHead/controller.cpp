@@ -50,7 +50,7 @@ void Controller::insertClicked(){
     else{
         int c = senderTab->getLine()->text().toInt(&ok);
         if(ok){
-            Intero* tmp = new Intero(c);
+            Tipo* tmp = new Intero(c);
             senderTab->getTree()->insert(tmp);
             delete tmp;
             senderTab->update_draw(senderTab->getTree());
@@ -63,14 +63,11 @@ void Controller::insertClicked(){
 void Controller::deleteClicked(){
     Tab* senderTab = dynamic_cast<Tab*>(sender());
 
-   // if(!senderTab->getTree())
-   //     return;
-
     if(dynamic_cast<HuffmanTab*>(senderTab)){
         std::string s = senderTab->getLine()->text().toStdString();
 
         if(s.length() != 0){
-            Huffman* tmp = new Huffman(0, s);
+            Tipo* tmp = new Huffman(0, s);
 
             try {
                 senderTab->getTree()->deleteNodo(tmp);
@@ -96,7 +93,7 @@ void Controller::deleteClicked(){
 
 
         if(ok){
-            Intero* tmp = new Intero(c);
+            Tipo* tmp = new Intero(c);
             try{
                 senderTab->getTree()->deleteNodo(tmp);
             }
@@ -147,7 +144,7 @@ void Controller::searchClicked(){
         int c = senderTab->getLine()->text().toInt(&ok);
         if(ok){
             try{
-                Intero* tmp = new Intero(c);
+                Tipo* tmp = new Intero(c);
                 Tipo* auxT = senderTab->getTree()->search(tmp);
                 delete tmp;
                 Node* nod = new Node(QString::fromStdString(auxT->to_string()));

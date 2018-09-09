@@ -127,7 +127,7 @@ void TwoThreeTree::deleteNodo(const Tipo* t){
     if(!aux)
         throw new NodeNotFound();
     if(aux->num == 2){  //tolgo il campo info o other in base a quale dei due è t
-        if(aux->info == t){ //il campo da rimuovere è il primo (info)
+        if(*(aux->info) == t){ //il campo da rimuovere è il primo (info)
               //tengo solo il secondo campo, other (che ora diventa info)
                aux->info = aux->other->copia();
                removeOther(aux);
