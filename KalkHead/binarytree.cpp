@@ -29,13 +29,10 @@ BinaryTree::nodo::~nodo(){
 }
 
 bool BinaryTree::empty() const{
-    if(root == nullptr){
-        std::cout << "INSIDE EMPTY" << std::endl;
+    if(root == nullptr)
         return true;
-    }
-    else{
+    else
         return false;
-    }
 }
 
 //PER GUI
