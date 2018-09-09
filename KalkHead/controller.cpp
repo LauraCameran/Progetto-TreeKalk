@@ -270,7 +270,7 @@ void Controller::plusClicked(){
             emit secondTreeError();
         }
         else{
-            BinarySearchTree* result;
+            BinarySearchTree* result = new BinarySearchTree();
             if(auxT){
                 BinaryTree* a = senderTab->getSecondTree();
                 result = (dynamic_cast<BinarySearchTree*>(a))->operator +(auxT);
