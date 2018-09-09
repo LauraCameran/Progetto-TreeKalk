@@ -141,6 +141,7 @@ void Controller::searchClicked(){
 
         Node* nod = new Node(QString::fromStdString(auxT->to_string()));
         senderTab->drawOneNode(nod);
+        delete auxT;
     }
     else{
         bool ok;
@@ -408,7 +409,7 @@ void Controller::subPreClicked(){
         emit errorNode();
     }
 }
-//TODO check copia nodo linea 413
+
 void Controller::subInvClicked(){
     TwoThreeTab* senderTab = dynamic_cast<TwoThreeTab*>(sender());
     if(!senderTab->getTree()->returnRoot()){
