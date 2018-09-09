@@ -177,7 +177,6 @@ void HuffmanTree::getCompression(std::map<std::string, std::string>&t,HuffmanTre
         getCompression(t, x->left, path += "1");
 
         if(!x->left && !x->right){
-            // Perche va in crash ?
             Huffman* x_cast = dynamic_cast<Huffman*>(x->info);
 
             if(!x_cast)
@@ -222,9 +221,22 @@ Tipo* HuffmanTree::search(const Tipo* x) const{
     return s->info->copia();
 }
 
-// Si potrebbe aggiungere il valore Huffman al dizionario
-// e ricostruire l'albero
-void HuffmanTree::insert(Tipo* x){}
+// Inserimento di un tipo Huffman nell'albero
+void HuffmanTree::insert(Tipo* x){
+    Huffman* tmp = dynamic_cast<Huffman*>(x);
+    if(!tmp)
+        throw new BadTypeValue("Huffman::insert", "Cast non riuscito");
+
+    if(tmp->getData().length() == 0)
+        throw new BadTypeValue("Huffman::insert", "Stringa vuota");
+
+    if(dict.find(tmp->getData()) == dict.end())
+        dict[tmp->getData()] = tmp->getFrequency();
+    else
+        dict[tmp->getData()] += tmp->getFrequency();
+
+    buildTree(dict);
+}
 
 void HuffmanTree::deleteNodo(const Tipo *x){
     const Huffman* x_cast = dynamic_cast<const Huffman*>(x);
