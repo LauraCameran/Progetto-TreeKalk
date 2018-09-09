@@ -79,6 +79,7 @@ signals:
     void auxiliaryShowT();
 
 protected:
+
     BinaryTree* tree;
     Controller* controller;
     QGridLayout* mainLayout;

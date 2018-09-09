@@ -21,7 +21,7 @@ Controller::~Controller(){}
 
 void Controller::insertClicked(){
     Tab* senderTab = dynamic_cast<Tab*>(sender());  //vede chi ha mandato il segnale
-    bool ok;
+    bool ok = true;
 
     if(dynamic_cast<HuffmanTab*>(senderTab)){
         std::string s = senderTab->getLine()->text().toStdString();
@@ -46,6 +46,8 @@ void Controller::insertClicked(){
 
         dynamic_cast<HuffmanTab*>(senderTab)->setTree(p);
         senderTab->update_draw(senderTab->getTree());
+
+        delete p;
     }
     else{
         int c = senderTab->getLine()->text().toInt(&ok);
@@ -141,7 +143,7 @@ void Controller::searchClicked(){
         delete auxT;
     }
     else{
-        bool ok;
+        bool ok = true;
         int c = senderTab->getLine()->text().toInt(&ok);
         if(ok){
                  try{
@@ -150,6 +152,7 @@ void Controller::searchClicked(){
                      delete tmp;
                      Node* nod = new Node(QString::fromStdString(auxT->to_string()));
                      senderTab->drawOneNode(nod);
+                     delete auxT;
                  }
                  catch(NodeNotFound* e){
                      emit errorNode();
@@ -309,6 +312,8 @@ void Controller::plusClicked(){
                 }
                 a = senderTab->getSecondTree();
 
+                if(result)
+                    delete result;
 
                 result = (dynamic_cast<HuffmanTree*>(a))->operator +(auxT);
             }
