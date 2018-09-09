@@ -144,15 +144,18 @@ void Controller::searchClicked(){
         bool ok;
         int c = senderTab->getLine()->text().toInt(&ok);
         if(ok){
-            try{
-                Tipo* tmp = new Intero(c);
-                Tipo* auxT = senderTab->getTree()->search(tmp);
-                delete tmp;
-                Node* nod = new Node(QString::fromStdString(auxT->to_string()));
-                delete auxT;
-                senderTab->drawOneNode(nod);
-
+                 try{
+                     Intero* tmp = new Intero(c);
+                     Tipo* auxT = senderTab->getTree()->search(tmp);
+                     delete tmp;
+                     Node* nod = new Node(QString::fromStdString(auxT->to_string()));
+                     senderTab->drawOneNode(nod);
+                 }
+                 catch(NodeNotFound* e){
+                     emit errorNode();
+                 }
         }
+
         else
             emit errorInput();
     }

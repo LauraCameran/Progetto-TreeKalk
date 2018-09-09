@@ -108,8 +108,8 @@ BinarySearchTree::nodo* BinarySearchTree::searchNodo(nodo* x, const Tipo* t) con
 }
 
 Tipo* BinarySearchTree::search(const Tipo* t) const{
-    if(!(typeid(root->info) == typeid(t)))
-        throw new BadTypeValue();
+    //if(!(typeid(root->info) == typeid(t)))
+    //    throw new BadTypeValue();
 
     BinarySearchTree::nodo* p = searchNodo(root, t);
     if(!p)
