@@ -47,6 +47,7 @@ void BinarySearchTree::insertNodo(nodo* x, Tipo* t){
     }
 }
 
+// copia profonda dei nodi di un albero
 BinarySearchTree::nodo* BinarySearchTree::copia(nodo* t, nodo* p){
     if(t){
         BinarySearchTree::nodo* x = new nodo(t->info->copia(), p);
@@ -58,6 +59,7 @@ BinarySearchTree::nodo* BinarySearchTree::copia(nodo* t, nodo* p){
         return nullptr;
 }
 
+// delete di un nodo senza ritorno del nodo eliminato
 void BinarySearchTree::deleteNodo(const Tipo* t){
     BinarySearchTree::nodo* x = nullptr;
     BinarySearchTree::nodo* y = nullptr;
@@ -92,7 +94,7 @@ void BinarySearchTree::deleteNodo(const Tipo* t){
     delete y;
 
 }
-
+// ricerca di un nodo sull'albero ricorsivamente tramite chiave
 BinarySearchTree::nodo* BinarySearchTree::searchNodo(nodo* x, const Tipo* t) const{
     if(!x)
         return nullptr;

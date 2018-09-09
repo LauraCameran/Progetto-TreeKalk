@@ -26,13 +26,16 @@ HuffmanTree::nodo* HuffmanTree::copia( nodo* t, nodo* p){
 
 // A finish tree have n nodes and n-1 internal nodes
 // Don't omits unused symbols
+
+// generazione dell'albero tramite stringa inserita
 HuffmanTree::HuffmanTree(const std::string& s){
     if(s.length() == 0)
         throw new BadValueConstructor("BadValueConstructor", "Stringa vuota");
 
     std::string tmp = "";
 
-    for(int i = 0; i < s.length(); i++){
+    // creazione del dizionario di chiave - frequenza
+    for(int i = 0; i < (int)s.length(); i++){
         tmp = s[i];
         if(dict.find(tmp) == dict.end())
             dict[tmp] = 1;
@@ -56,6 +59,7 @@ void HuffmanTree::buildTree(std::map<std::string, int>& d){
     if(root != nullptr)
         distruggi(root);
 
+    // Queue di nodi ordinata da basse ad alte frequenze
     std::vector<HuffmanTree::nodo*> queue;
     queue.reserve(d.size());
 
@@ -64,6 +68,8 @@ void HuffmanTree::buildTree(std::map<std::string, int>& d){
 
     queue.resize(queue.size());
 
+    // finche nella queue restano almeno due nodi continuo l'inserimento
+    // prelevando i primi due nodi della lista ordinata
     while(queue.size() > 1){
         std::sort(queue.begin(), queue.end(), compare);
 
@@ -74,13 +80,14 @@ void HuffmanTree::buildTree(std::map<std::string, int>& d){
 
         Huffman* x = dynamic_cast<Huffman*>(a->info);
         Huffman* y = dynamic_cast<Huffman*>(b->info);
-
+        // Creao un nuovo nodo che avra la somma delle frequenze prelevate dalla queeu
+        // e la concatenazione delle chiavi
         Huffman* tmp = new Huffman(x->getFrequency() + y->getFrequency(), x->getData() + y->getData());
         HuffmanTree::nodo* t = new HuffmanTree::nodo(tmp, nullptr, a, b);
 
         a->parent = t;
         b->parent = t;
-
+        // aggiungo il nuovo nodo alla queue
         queue.push_back(t);
     }
     root = (*queue.begin());
@@ -172,6 +179,7 @@ HuffmanTree* HuffmanTree::operator+(const HuffmanTree* t) const{
     return new HuffmanTree(string_tmp);
 }
 
+// per ogni chiave presente nel dizionario, crea una rapresentazione binaria compressa per tale chiave
 void HuffmanTree::getCompression(std::map<std::string, std::string>&t,HuffmanTree::nodo* x, std::string path) const{
     if(x){
         getCompression(t, x->left, path += "1");

@@ -230,20 +230,26 @@ Tipo* TwoThreeTree::min() const{
     return p->info->copia();
 }
 
+
 void TwoThreeTree::split(node* n, Tipo* t){
     Tipo* mid = searchMiddle(n, t);
+    // Quando split viene chiamata c'è sempre un padre
     if(n->parent){
         node* n_parent = dynamic_cast<node*>(n->parent);
+        // Padre con un campo info
         if(n_parent->other == nullptr){
             addInfo(n_parent, mid);
             int c = child(n);
-
+            // n è figlio sinistro
             if(c == 1){
+                // Nodo centrale con campo info il piu a destra di n
                 n_parent->middle = new TwoThreeTree::node(n->other->copia(), n->parent);
-                removeOther(n);
+                removeOther(n); // ora il nodo n ha solo il campo info
             }
             else{
+                //  n e figlio dx
                 if(c == 3){
+                    // nodo centrale avra campo info il piu a sinistra di n
                     n_parent->middle = new node(n->info->copia(), n->parent);
                     n->info = n->other->copia();
                     removeOther(n);
@@ -252,15 +258,20 @@ void TwoThreeTree::split(node* n, Tipo* t){
         }
         else{   // Padre con 2 info
             int c = child(n);
+            // n e figlio sinistro
             if(c == 1){
+
+                // Creazione del "secondo" centrale
                 node* tmp = new node(n->other->copia(), n->parent);
                 removeOther(n);
 
+                // per info nuovo padre dei 2 sottoalberi
                 Tipo* midParent = searchMiddle(n_parent, mid);
                 node* grandad = dynamic_cast<node*>(n_parent->parent);
-
+                // p->num = 1
                 node* p = new node(n_parent->other->copia());
 
+                // sistemazione campi di padre
                 removeOther(n_parent);
 
                 p->left = n_parent->middle;
@@ -268,8 +279,8 @@ void TwoThreeTree::split(node* n, Tipo* t){
 
                 p->left->parent = p;
                 p->right->parent = p;
-
                 n->parent->right = tmp;
+                // ora il nodo centrale e il sx del nuovo padre
                 n_parent->middle = nullptr;
 
                 node* boss = new node(midParent->copia(), grandad);
@@ -278,12 +289,14 @@ void TwoThreeTree::split(node* n, Tipo* t){
                 p->parent = boss;
                 boss->left = n->parent;
                 boss->right = p;
+                // abbiamo creato un nuovo nodo radice
                 if(boss->parent == nullptr)
                     root = boss;
                 else
                     grandad->left = boss;
             }
             if(c == 3){
+                // n e un figlio dx
                 node* tmp = new node(n->info->copia());
 
                 n->info = n->other->copia();
@@ -339,6 +352,9 @@ Tipo* TwoThreeTree::searchMiddle(node* n, Tipo* t){
 }
 
 int TwoThreeTree::child(node* n) const{
+    if(!n)
+        return 0;
+
     if(n->parent->left == n)
         return 1;
     else{
@@ -347,7 +363,6 @@ int TwoThreeTree::child(node* n) const{
         else
             return 2;
     }
-    return 0;
 }
 
 void TwoThreeTree::addInfo(node* n, Tipo* t){

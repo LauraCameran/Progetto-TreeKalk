@@ -74,7 +74,9 @@ void Controller::deleteClicked(){
             try {
                 senderTab->getTree()->deleteNodo(tmp);
             } catch (Exception* e) {
+                delete e;
                 emit errorNode();
+                return;
             }
 
             delete tmp;
@@ -86,8 +88,10 @@ void Controller::deleteClicked(){
                 senderTab->update_draw(senderTab->getTree());
 
         }
-        else
+        else{
             emit errorInput();
+            return;
+        }
     }
     else{
         bool ok;
@@ -100,11 +104,14 @@ void Controller::deleteClicked(){
                 senderTab->getTree()->deleteNodo(tmp);
             }
             catch(DeleteNotAllowed* e){
+                delete e;
                 emit errorDel();
                 return;
             }
             catch(NodeNotFound* e){
+                delete e;
                 emit errorNode();
+                return;
             }
             delete tmp;
             senderTab->cleanScene();
@@ -155,7 +162,9 @@ void Controller::searchClicked(){
                      delete auxT;
                  }
                  catch(NodeNotFound* e){
-                     emit errorNode();
+                    delete e;
+                    emit errorNode();
+                    return;
                  }
         }
 
@@ -273,7 +282,7 @@ void Controller::plusClicked(){
             emit secondTreeError();
         }
         else{
-            BinarySearchTree* result;
+            BinarySearchTree* result = new BinarySearchTree();
             if(auxT){
                 BinaryTree* a = senderTab->getSecondTree();
                 result = (dynamic_cast<BinarySearchTree*>(a))->operator +(auxT);
@@ -342,7 +351,7 @@ void Controller::minusClicked(){
         emit errTree();
         return;
     }
-    BinarySearchTree* result;
+    BinarySearchTree* result = new BinarySearchTree();
     BinarySearchTree* auxT = dynamic_cast<BinarySearchTree*>(senderTab->getTree());
     if(auxT){
         BinaryTree* a = senderTab->getSecondTree();
@@ -401,6 +410,7 @@ void Controller::subPreClicked(){
         senderTab->drawOneNode(nod);
     }
     catch(NodeNotFound* e){
+        delete e;
         emit errorNode();
     }
 }
@@ -421,6 +431,7 @@ void Controller::subInvClicked(){
         senderTab->drawOneNode(nod);
     }
     catch(NodeNotFound* e){
+        delete e;
         emit errorNode();
     }
 

@@ -40,15 +40,15 @@ Huffman* Huffman::operator+(const Tipo* x) const{
 
 }
 
-Huffman* Huffman::operator-(const Tipo* x) const{
+Huffman* Huffman::operator-(const Tipo*) const{
     throw new OperationNotAllowed();
 }
 
-Huffman* Huffman::operator *(const Tipo* x) const{
+Huffman* Huffman::operator *(const Tipo*) const{
     throw new OperationNotAllowed();
 }
 
-Huffman* Huffman::operator /(const Tipo* x) const{
+Huffman* Huffman::operator /(const Tipo*) const{
     throw new OperationNotAllowed();
 }
 
@@ -64,12 +64,11 @@ Huffman& Huffman::operator =(const Tipo& t){
 
 bool Huffman::operator <(const Tipo* t) const{
     const Huffman* p = dynamic_cast<const Huffman*>(t);
-    if(t){
+    if(t && p){
         if(frequency < p->frequency)
             return true;
-        else
-            return false;
     }
+    return false;
 }
 
 void Huffman::print(std::ostream &os) const{
@@ -95,6 +94,27 @@ std::string Huffman::to_string() const{
     return data + "|" + std::to_string(frequency);
 }
 
-bool Huffman::operator>(const Tipo*) const{}
-bool Huffman::operator<=(const Tipo*) const{}
-bool Huffman::operator>=(const Tipo*) const{}
+bool Huffman::operator>(const Tipo* t) const{
+    const Huffman* p = dynamic_cast<const Huffman*>(t);
+    if(t && p){
+        if(frequency > p->frequency)
+            return true;
+    }
+    return false;
+}
+bool Huffman::operator<=(const Tipo* t) const{
+    const Huffman* p = dynamic_cast<const Huffman*>(t);
+    if(t && p){
+        if(frequency <= p->frequency)
+            return true;
+    }
+    return false;
+}
+bool Huffman::operator>=(const Tipo* t) const{
+    const Huffman* p = dynamic_cast<const Huffman*>(t);
+    if(t){
+        if(frequency >= p->frequency)
+            return true;
+    }
+    return false;
+}

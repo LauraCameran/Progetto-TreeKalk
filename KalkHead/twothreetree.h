@@ -34,9 +34,9 @@ public:
 private:
 
     // Distruttore profondo reimplementato
-    static void distruggi(nodo*);
+    void distruggi(nodo*);
     // Contatore dei nodi reimplementato
-    static int conta(nodo*);
+    int conta(nodo*);
 
     node* copia( nodo*, nodo* = nullptr);
     void insertNodo(nodo*, Tipo*);
@@ -59,7 +59,9 @@ private:
     // return 2 se figlio centrale
     // return 3 se figlio dx
     int child(node*) const;
-    void addInfo(node*, Tipo*); //aggiunge il secondo campo info
+
+    //aggiunge il secondo campo info
+    void addInfo(node*, Tipo*);
 
     // Toglie il secondo campo info
     void removeOther(node*);

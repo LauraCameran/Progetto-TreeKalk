@@ -45,9 +45,9 @@ protected:
     nodo* root;
 
     // Distruttore profondo
-    static void distruggi(nodo*);
+    virtual void distruggi(nodo*);
     // Contatore dei nodi
-    static int conta(nodo*);
+    virtual int conta(nodo*);
     // Redifinizione del metodo a seconda dei campi dati da copiare
     virtual nodo* copia(nodo*, nodo* = nullptr) =0;
     // Search basata sul parametro che si vuole

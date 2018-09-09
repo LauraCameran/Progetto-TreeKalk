@@ -8,6 +8,8 @@ AVLTree::~AVLTree(){
     distruggi(root);
 }
 
+// Effetua la copia ricorsiva di un albero partendo
+// da un nodo dato e un nodo padre, nullptr di default
 AVLTree::node* AVLTree::copia(nodo* t, nodo* p){
     node* t_cast = dynamic_cast<node*>(t);
     if(t_cast){
@@ -21,6 +23,7 @@ AVLTree::node* AVLTree::copia(nodo* t, nodo* p){
         return nullptr;
 }
 
+// Metodo ricorsivo per l'inserimento di un nuovo nodo
 void AVLTree::insertNodo(nodo* x, Tipo* t){
     node* x_cast = dynamic_cast<node*>(x);
     if(x_cast){
@@ -41,6 +44,7 @@ void AVLTree::insertNodo(nodo* x, Tipo* t){
     rebalance(x_cast);
 }
 
+// Chiamata base di ricerca
 Tipo* AVLTree::search(const Tipo* t) const{
     node* p = searchNodo(dynamic_cast<node*>(root), t);
     if(!p)
@@ -48,6 +52,7 @@ Tipo* AVLTree::search(const Tipo* t) const{
     return p->info->copia();
 }
 
+// Ricerca di un nodo tramite la chiave all'interno di un albero
 AVLTree::node* AVLTree::searchNodo(nodo* x, const Tipo* t) const{
     if(!x)
         return nullptr;
@@ -63,6 +68,7 @@ AVLTree::node* AVLTree::searchNodo(nodo* x, const Tipo* t) const{
     }
 }
 
+// Trova il successivo di un nodo
 AVLTree::node* AVLTree::succ(node* x){
     if(x->right != nullptr)
         return minNodo(x->right);
@@ -76,6 +82,9 @@ AVLTree::node* AVLTree::succ(node* x){
     }
 }
 
+
+// Effettua la cancellazione definitiva di un nodo senza ritornare una copia al chiamante
+// stacca il nodo ricollegando i suoi figli e il padre
 void AVLTree::deleteNodo(const Tipo* t){
     node* x = nullptr;
     node* y = nullptr;
@@ -124,9 +133,7 @@ void AVLTree::deleteNodo(const Tipo* t){
 }
 
 
-
-
-
+// Chiamata base di inserimento
 void AVLTree::insert(Tipo* t){
     if(root)
         insertNodo(dynamic_cast<node*>(root), t->copia());
@@ -135,6 +142,7 @@ void AVLTree::insert(Tipo* t){
 
 }
 
+// Metodo ricorsivo per la ricerca del massimo
 AVLTree::node* AVLTree::maxNodo(nodo* x) const{
     if(x->right != nullptr){
         return maxNodo(x->right);
@@ -142,6 +150,7 @@ AVLTree::node* AVLTree::maxNodo(nodo* x) const{
     return dynamic_cast<node*>(x);
 }
 
+// Metodo base
 Tipo* AVLTree::max() const{
     if(root)
         return maxNodo(dynamic_cast<node*>(root))->info->copia();
@@ -149,6 +158,7 @@ Tipo* AVLTree::max() const{
     throw new TreeInexistent();
 }
 
+// metodo ricorsivo per la ricerca del minimo
 AVLTree::node* AVLTree::minNodo(nodo* x) const{
     if(x->left != nullptr){
         return minNodo(x->left);
@@ -282,10 +292,9 @@ AVLTree::node* AVLTree::preorder(node* n) const{
 
 AVLTree* AVLTree::subtree_preorder(){
     node* radix = preorder(dynamic_cast<node*>(root));
-    if(!radix){
+    if(!radix)
         throw new NodeNotFound();
-        return nullptr;
-    }
+
     AVLTree* subTree = new AVLTree();
     subTree->root = copia(radix);
     return subTree;
