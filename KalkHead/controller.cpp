@@ -21,7 +21,7 @@ Controller::~Controller(){}
 
 void Controller::insertClicked(){
     Tab* senderTab = dynamic_cast<Tab*>(sender());  //vede chi ha mandato il segnale
-    bool ok;
+    bool ok = true;
 
     if(dynamic_cast<HuffmanTab*>(senderTab)){
         std::string s = senderTab->getLine()->text().toStdString();
@@ -46,11 +46,13 @@ void Controller::insertClicked(){
 
         dynamic_cast<HuffmanTab*>(senderTab)->setTree(p);
         senderTab->update_draw(senderTab->getTree());
+
+        delete p;
     }
     else{
         int c = senderTab->getLine()->text().toInt(&ok);
         if(ok){
-            Intero* tmp = new Intero(c);
+            Tipo* tmp = new Intero(c);
             senderTab->getTree()->insert(tmp);
             delete tmp;
             senderTab->update_draw(senderTab->getTree());
@@ -63,14 +65,11 @@ void Controller::insertClicked(){
 void Controller::deleteClicked(){
     Tab* senderTab = dynamic_cast<Tab*>(sender());
 
-   // if(!senderTab->getTree())
-   //     return;
-
     if(dynamic_cast<HuffmanTab*>(senderTab)){
         std::string s = senderTab->getLine()->text().toStdString();
 
         if(s.length() != 0){
-            Huffman* tmp = new Huffman(0, s);
+            Tipo* tmp = new Huffman(0, s);
 
             try {
                 senderTab->getTree()->deleteNodo(tmp);
@@ -96,7 +95,7 @@ void Controller::deleteClicked(){
 
 
         if(ok){
-            Intero* tmp = new Intero(c);
+            Tipo* tmp = new Intero(c);
             try{
                 senderTab->getTree()->deleteNodo(tmp);
             }
@@ -144,28 +143,22 @@ void Controller::searchClicked(){
         delete auxT;
     }
     else{
-        bool ok;
+        bool ok = true;
         int c = senderTab->getLine()->text().toInt(&ok);
         if(ok){
-
-                Intero* tmp = new Intero(c);
-                Tipo* auxT = nullptr;
-                try{
-                    auxT = senderTab->getTree()->search(tmp);
-                }catch(BadTypeValue* e){
-                    delete e;
-                    delete tmp;
-                    emit errorNode();
-
-                    return;
-                }
-
-                delete tmp;
-                Node* nod = new Node(QString::fromStdString(auxT->to_string()));
-                delete auxT;
-                senderTab->drawOneNode(nod);
-
+                 try{
+                     Intero* tmp = new Intero(c);
+                     Tipo* auxT = senderTab->getTree()->search(tmp);
+                     delete tmp;
+                     Node* nod = new Node(QString::fromStdString(auxT->to_string()));
+                     senderTab->drawOneNode(nod);
+                     delete auxT;
+                 }
+                 catch(NodeNotFound* e){
+                     emit errorNode();
+                 }
         }
+
         else
             emit errorInput();
     }
@@ -319,6 +312,8 @@ void Controller::plusClicked(){
                 }
                 a = senderTab->getSecondTree();
 
+                if(result)
+                    delete result;
 
                 result = (dynamic_cast<HuffmanTree*>(a))->operator +(auxT);
             }

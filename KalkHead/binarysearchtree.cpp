@@ -108,8 +108,8 @@ BinarySearchTree::nodo* BinarySearchTree::searchNodo(nodo* x, const Tipo* t) con
 }
 
 Tipo* BinarySearchTree::search(const Tipo* t) const{
-    if(!(typeid(root->info) == typeid(t)))
-        throw new BadTypeValue();
+    //if(!(typeid(root->info) == typeid(t)))
+    //    throw new BadTypeValue();
 
     BinarySearchTree::nodo* p = searchNodo(root, t);
     if(!p)
@@ -203,60 +203,6 @@ BinarySearchTree* BinarySearchTree::operator-(const BinarySearchTree* x) const{
     p->root = sottrazione(root, x->root, nullptr);
     return p;
 }
-
-//// SE uno dei due nodi non esiste, esso viene considerato come 0 e dunque si annulla
-//BinarySearchTree::nodo* BinarySearchTree::moltiplicazione(const nodo* a, const nodo* b) const{
-//    // Se non esiste a provo con b
-//    if(!a && b)
-//        return new nodo(b->info, nullptr, moltiplicazione(nullptr, b->left), moltiplicazione(nullptr, b->right));
-
-//    if(!b && a)
-//        return new nodo(a->info, nullptr, moltiplicazione(a->left, nullptr), moltiplicazione(a->right, nullptr));
-
-//    if(a && b)
-//        return new nodo((a->info->operator*(b->info)), nullptr, moltiplicazione(a->left, b->left), moltiplicazione(a->right, b->right));
-
-//    else
-//        return nullptr;
-
-//}
-
-//BinarySearchTree* BinarySearchTree::operator*(const BinarySearchTree* x) const{
-//    BinarySearchTree* p = new BinarySearchTree();
-//    p->root = moltiplicazione(root, x->root);
-//    return p;
-//}
-
-// [TODO]
-// se il nodo A or il nodo B non esiste lancio un'eccezzione
-//BinarySearchTree::nodo* BinarySearchTree::divisione(const nodo* a, const nodo* b) const{
-//    // Se non esiste a cosa ci faccio ?
-//    // Sarebbe come fare 0/n => 0
-
-//    if(!a && b)
-//        return new nodo(nullptr, nullptr, divisione(a->left, b->left), divisione(a->right, b->right));
-
-//    if(!b && a)
-//        return nullptr;
-
-//    if(a && b){
-//        return new nodo(a->info->operator /(b->info), nullptr, divisione(a->left, b->left), divisione(a->right, b->right));
-//    }
-//    else
-//        return nullptr;
-//}
-
-//BinarySearchTree* BinarySearchTree::operator /(const BinarySearchTree* x) const{
-//    BinarySearchTree* p = new BinarySearchTree();
-//    try{
-//        p->root = divisione(root, x->root);
-//    }catch(DivideByZero* e){
-//        std::cout << e->getMessage();
-//        return nullptr;
-//    }
-//    return p;
-//}
-
 
 BinarySearchTree& BinarySearchTree::operator=(const BinaryTree& t){
     if(this != &t){

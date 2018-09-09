@@ -217,6 +217,7 @@ void BinarySearchTab::minusClicked(){
 }
 
 void BinarySearchTab::setTree(BinarySearchTree* t){
+
     tree->operator =(*t);
     t->elimTree();
 }
@@ -276,6 +277,9 @@ void HuffmanTab::compressClicked(){
 }
 
 void HuffmanTab::setTree(HuffmanTree* t){
+    if(tree)
+        delete tree;
+
     tree = new HuffmanTree(*t);
 }
 

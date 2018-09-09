@@ -18,7 +18,7 @@ bool Intero::operator==(const Tipo* t) const{
 }
 
 Intero* Intero::copia() const{
-    // Valgrind segnala leak con la new
+
     return new Intero(dato);
 }
 
