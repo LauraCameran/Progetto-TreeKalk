@@ -30,7 +30,7 @@ public:
 
 public slots:
     //generics
-    void insertClicked(); //fare i check
+    void insertClicked();
     void deleteClicked();
     void searchClicked();
     void maxClicked();
@@ -38,16 +38,15 @@ public slots:
     void deleteTreeClicked();
     void showTreeClicked();
 
-    void keepClicked(); //binarys
-    void plusClicked(); //binarys
-    void minusClicked(); //binarys
-    void subTPreClicked();  //AVL
-    void subTInvClicked();  //AVL
-    void subPreClicked();  //2-3
-    void subInvClicked();  //2-3
-    void compressClicked(); //huffman
+    void keepClicked();
+    void plusClicked();
+    void minusClicked();
+    void subTPreClicked();
+    void subTInvClicked();
+    void subPreClicked();
+    void subInvClicked();
+    void compressClicked();
 
-    // creazione di segnali con void
 signals:
     void errorInput();
     void secondTreeError();
