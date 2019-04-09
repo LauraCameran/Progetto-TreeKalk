@@ -5,3 +5,7 @@ Il progetto prevede la creazione di una calcolatrice di alberi binari, AVL, Huff
 
 Il modello è scritto in C++ e alcune classi sono state riscritte in Java. 
 Per la GUI è stato utilizzato QtCreator.
+
+Creatori:
+# Laura Cameran
+# Bogdan Stanciu
