@@ -7,5 +7,5 @@ Il modello è scritto in C++ e alcune classi sono state riscritte in Java.
 Per la GUI è stato utilizzato QtCreator.
 
 Creatori:
-# Laura Cameran
-# Bogdan Stanciu
+* Laura Cameran
+* Bogdan Stanciu
